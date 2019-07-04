@@ -9,7 +9,7 @@
 <body>
     <nav>
         <ul>
-            <li><a href="../index.html">Main</a></li>
+            <li><a href="../index.html">Main page</a></li>
             <li><a href="../tutorials/java-plugins.html">Plugin system in Java</a></li>
         </ul>
     </nav>
@@ -26,7 +26,9 @@
     <h4>./gradlew build</h4>
     <p>It will download necessary files and build the project. Then, you can run the generated application stub by</p>
     <h4>./gradlew run</h4>
-    <p>The app will run and exit. Then, open this project in IDEA and initialize it without changing any settings. Create a directory for running application. Create a run configuration of type "Application": select the main class, set "Working directory" to the created folder, set "Use classpath of module" to "[project name]_main"; set the JRE version, skip the rest options, and apply. After this, we can start coding.</p>
+    <p>The app will run and exit. Then, open this project in IDEA and initialize it without changing any settings. Create a directory for running application.
+        Create a run configuration of type "Application": select the main class, set "Working directory" to the created folder, set "Use classpath of module" to "[project name]_main";
+        set the JRE version, skip the rest options, and apply. After this, we can start coding.</p>
     <p>Create an interface which will represent a plugin. I named it just "Plugin". Next, we'll need to create a subproject for "Plugin" implementation:</p>
     <ol>
         <li>Make a subdirectory "Implementation" of "Plugin example";</li>
@@ -87,7 +89,9 @@
         }
       }
     </code></pre>
-    <p>Now we must create a way to find and load the plugins. We'll go with a classic approach - parsing a specific directory for jars. This folder will be named "plugins". The application will create it if it doesn't exist or will scan it for jars and load ones that have a class implementing Plugin interface. The class will be instantiated via default constructor and its "load()" method will be called.</p>
+    <p>Now we must create a way to find and load the plugins. We'll go with a classic approach - parsing a specific directory for jars. This folder will be named "plugins".
+        The application will create it if it doesn't exist or will scan it for jars and load ones that have a class implementing Plugin interface.
+        The class will be instantiated via default constructor and its "load()" method will be called.</p>
 
     <pre><code class='language-java'>
        static final String PLUGIN_FOLDER="plugins";
