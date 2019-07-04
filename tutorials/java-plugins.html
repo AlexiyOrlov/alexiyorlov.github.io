@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Plugin system implementation (Java)</title>
+    <link rel="stylesheet" href="../prism/prism-dark.css">
+</head>
+<body>
+    <script src="../prism/prism-dark.js"></script>
+    <p>Here I will show how to implement a plugin system for a Java application. I'll be using Gradle 4.0.2 and Intellij IDEA 2017.3 for this.</p>
+    <p>First, we'll make a folder for our sources. Its name will be a top level project in our Gradle
+        configuration, so type some general name, like "Plugin example".
+        Then, navigate into this folder and open command line or terminal. Execute this command:</p>
+    <h4>gradle init --type java-application</h4>
+
+    <p>It will create necessary files and folders (including a Gradle wrapper) with a default layout.
+        We will switch to using the generated wrapper next.</p>
+    <p>Run a command:</p>
+    <h4>./gradlew build</h4>
+    <p>It will download necessary files and build the project. Then, you can run the generated application stub by</p>
+    <h4>./gradlew run</h4>
+    <p>The app will run and exit. Then, open this project in IDEA and initialize it without changing any settings. Create a directory for running application. Create a run configuration of type "Application": select the main class, set "Working directory" to the created folder, set "Use classpath of module" to "[project name]_main"; set the JRE version, skip the rest options, and apply. After this, we can start coding.</p>
+    <p>Create an interface which will represent a plugin. I named it just "Plugin". Next, we'll need to create a subproject for "Plugin" implementation:</p>
+    <ol>
+        <li>Make a subdirectory "Implementation" of "Plugin example";</li>
+        <li>Create a "build.gradle" file in it;</li>
+        <li>Create a folder "src/main/java" in this folder (standard Gradle source set);</li>
+        <li>Write a line "include ('Implementation')" in the "settings.gradle";</li>
+        <li>We will change the main build file slightly, so the 'java' plugin and top project repositories are applied to all projects:
+
+            <pre><code class='language-gradle'>
+    // Apply the java plugin to add support for Java
+    allprojects {
+        apply plugin: 'java'
+        repositories {
+            // You can declare any Maven/Ivy/file repository here.
+            jcenter()
+        }
+    }
+
+    // Apply the application plugin to add support for building an application
+    apply plugin: 'application'
+
+    dependencies {
+        // This dependency is found on compile classpath of this component and consumers.
+        compile 'com.google.guava:guava:21.0'
+        // Use JUnit test framework
+        testCompile 'junit:junit:4.12'
+    }
+
+    // Define the main class for the application
+    mainClassName = 'App'
+    </code></pre> </li>
+        <li>Refresh the project from the Gradle tool window or the popup;</li>
+        <li>Write <code class='language-gradle'>dependencies{ compile rootProject }</code> in Implementation's "build.gradle";</li>
+        <li>Refresh the project again.</li>
+    </ol>
+
+    <p>If all steps were performed correctly, you now can create an implementation of "Plugin" in the "Implementation" subproject. Let's name it "Implementation" as well.</p>
+    <p>Add a method to Plugin interface:</p>
+    <pre>
+    <code class='language-java'>
+        public interface Plugin {
+        /**
+         *
+         * @return true if the loading was successful
+         */
+            boolean load();
+        }
+    </code>
+    </pre>
+    <p>And implement it in Implementation:</p>
+    <pre><code class='language-java'>
+      public class Implementation implements Plugin {
+
+        @Override
+        public boolean load() {
+            System.out.println("Plugin loaded");
+            return true;
+        }
+      }
+    </code></pre>
+    <p>Now we must create a way to find and load the plugins. We'll go with a classic approach - parsing a specific directory for jars. This folder will be named "plugins". The application will create it if it doesn't exist or will scan it for jars and load ones that have a class implementing Plugin interface. The class will be instantiated via default constructor and its "load()" method will be called.</p>
+
+    <pre><code class='language-java'>
+       static final String PLUGIN_FOLDER="plugins";
+       public static void main(String[] args) {
+            System.out.println(new App().getGreeting());
+            File pluginFolder=new File(PLUGIN_FOLDER);
+            if(!pluginFolder.exists())
+            {
+                if(pluginFolder.mkdirs())
+                {
+                    System.out.println("Created plugin folder");
+                };
+            }
+            File[] files=pluginFolder.listFiles((dir, name) -> name.endsWith(".jar"));
+            ArrayList&lt;URL&gt; urls=new ArrayList&lt;&gt;();
+            ArrayList&lt;String&gt; classes=new ArrayList&lt;&gt;();
+            if(files!=null) {
+                Arrays.stream(files).forEach(file -> {
+                    try {
+                        JarFile jarFile=new JarFile(file);
+                        urls.add(new URL("jar:file:"+PLUGIN_FOLDER+"/"+file.getName()+"!/"));
+                        jarFile.stream().forEach(jarEntry -> {
+                            if(jarEntry.getName().endsWith(".class"))
+                            {
+                                classes.add(jarEntry.getName());
+                            }
+                        });
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+                URLClassLoader pluginLoader=new URLClassLoader(urls.toArray(new URL[urls.size()]));
+                classes.forEach(s -> {
+                    try {
+                        Class classs=pluginLoader.loadClass(s.replaceAll("/",".").replace(".class",""));
+                        Class[] interfaces=classs.getInterfaces();
+                        for (Class anInterface : interfaces) {
+                            if(anInterface==Plugin.class)
+                            {
+                                Plugin plugin= (Plugin) classs.newInstance();
+                                if(plugin.load())
+                                {
+                                    System.out.println("Loaded plugin "+classs.getCanonicalName()+" successfully");
+                                }
+                                break;
+                            }
+                        }
+                    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+            System.out.println("Application stopped.");
+        }
+    </code></pre>
+    <p>As you can see, the application now gets all .jar files from "plugins" folder, creates a list of
+        class URLs and names. Then a URLClassLoader is used to handle these URLs and
+        load classes.</p>
+    <p>To see it in action, build the Implementation jar and place it into the "plugins" folder (assuming you ran the app once). The app should load Implementation and call its method, then exit.</p>
+    <p>There is a way to load .class files directly, but that approach will be covered separately.</p>
+</body>
+</html>
