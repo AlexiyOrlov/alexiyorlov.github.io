@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Plugin system implementation (Java)</title>
     <link rel="stylesheet" href="../prism/prism-dark.css">
     <link rel="stylesheet" href="../main.css">
@@ -96,7 +97,6 @@
     <pre><code class='language-java'>
        static final String PLUGIN_FOLDER="plugins";
        public static void main(String[] args) {
-            System.out.println(new App().getGreeting());
             File pluginFolder=new File(PLUGIN_FOLDER);
             if(!pluginFolder.exists())
             {
