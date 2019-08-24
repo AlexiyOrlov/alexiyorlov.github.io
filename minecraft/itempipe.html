@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Item Pipe</title>
+    <link rel="stylesheet" href="../main.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <nav>
+      <ul>
+        <li><a href="generators.html">Front page</a></li>
+        <li><a href="non-energy-blocks.html">Blocks that don't use energy</a></li>
+
+      </ul>
+    </nav>
+    Now, this is a pipe that you can do advanced routing with.<a href="https://imgur.com/M23AwuN"><img src="https://i.imgur.com/M23AwuN.png"/></a>
+    <div>
+      Unconfigured pipe behavior:
+      <ol>
+        <li>Moves inserted item forward, if possible.</li>
+        <li>If there's no straight path, moves the item to side direction.</li>
+        <li>If there are no side paths, moves the item backwards.</li>
+      </ol>
+      If there is a need to retrieve the item from pipe directly, empty hands can do that as well (should I just make a tool for such actions?) - Shift + right click on the pipe.
+    </div>
+    <h3>Changing general direction of item flow</h3>
+    <ol>
+      <li>Hold "Alt" and look at any side of the pipe. It will show current item flow from the side you are looking at, like this:
+        <div><a href="https://imgur.com/RmoxH6W"><img src="https://i.imgur.com/RmoxH6W.png"/></a></div>
+      </li>
+      <li>Click on the pipe with empty hands. It will show an interface of item flow map:
+        <div><a href="https://imgur.com/SfhT0ZP"><img src="https://i.imgur.com/SfhT0ZP.png" /></a></div>
+      </li>
+      <li>
+        Customize any direction by pressing appropriate radio button. If I, for example, set item flow from "west" to "up", then western side of the pipe will gain a
+        transparent yellow rectangle, indicating that it has a non-default flow:
+        <div><a href="https://imgur.com/tjaiPRQ"><img src="https://i.imgur.com/tjaiPRQ.png" /></a></div>
+      </li>
+    </ol>
+
+    <h3>Blacklisting and whitelisting items</h3>
+    <ol>
+      <li>Open the pipe GUI and press button "Open Filters". This will show up:
+        <div><a href="https://imgur.com/D2nHRZK"><img src="https://i.imgur.com/D2nHRZK.png" /></a></div>
+      </li>
+      <li>
+        For every pipe side, you can set either a blacklist or whitelist mode, and add up to 9 items by clicking with corresponding items onto appropriate filter slots.
+        <div><a href="https://imgur.com/YReh4fs"><img src="https://i.imgur.com/YReh4fs.png"/></a></div>
+        Empty whitelist will block all items from going through.
+      </li>
+      Pipe's side with non-empty blacklist will get a black transparent rectangle, and a side with a whitelist will gain a white transparent rectangle:
+      <div><a href="https://imgur.com/5fGhOtK"><img src="https://i.imgur.com/5fGhOtK.png" /></a></div>
+      Blacklist and whitelist rules are applied before general item flow direction.
+    </ol>
+
+  </body>
+</html>
