@@ -6,3 +6,7 @@ html{
 img{
   margin: 5mm;
 }
+
+a:visited{
+  color: #bb3a4b;
+}
