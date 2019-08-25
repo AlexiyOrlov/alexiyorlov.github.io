@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Companion spheres</title>
+    <link rel="stylesheet" href="../main.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <nav>
+      <ul>
+        <li><a href="generators.html">Front page</a></li>
+        <li><a href="energy-generators.html">Energy generators</a></li>
+        <li><a href="energy-blocks.html">Blocks that use energy</a></li>
+        <li><a href="energy-items.html">Items that use energy</a></li>
+        <li><a href="non-energy-blocks.html">Blocks that don't use energy</a></li>
+      </ul>
+    </nav>
+    Companion Spheres are entities that can be created by player and be given different tasks. Currently there are 4 tasks implemented:
+    <ol>
+      <li>Follow - simply follow the owner</li>
+      <li>Protect owner - attack mobs that attack the owner or are attacked by owner</li>
+      <li>Guard area - guards an area of a specified range from hostile mobs</li>
+      <li>Harvest assist - assists the player in block harvesting</li>
+    </ol>
+    A sphere will protect itself from aggressors automatically.
+    <p>Spheres look like this on the outside:</p>
+    <a href="https://imgur.com/Rr59oY9"><img src="https://i.imgur.com/Rr59oY9.png" /></a>
+    <p>And like this on the inside (particles show its center):</p>
+    <a href="https://imgur.com/L5qtWpa"><img src="https://i.imgur.com/L5qtWpa.png" /></a>
+    <p>Now, if you are interested in them, I will show the process of creating a sphere.</p>
+    <p>First, you will need four Focus Blocks:</p>
+    <a href="https://imgur.com/7YOy9R9"><img src="https://i.imgur.com/7YOy9R9.png"  /></a>
+    <p>Then, you have to place them at 11 blocks apart from each other, so there is an imaginary cross inside (lapis and red wool placed for reference):</p>
+    <a href="https://imgur.com/ulgHSAs"><img src="https://i.imgur.com/ulgHSAs.png"/></a>
+    <p>If you hear a beacon activation sound when you place the last Focus block, then you placed them all correctly.</p>
+    <p>Next, you have to choose how big sphere you want. A sphere size can be from 1 to 5, the bigger the size, the higher is its health and damage.
+      You determine that by placing one of the following blocks in the center (from less valuable to more valuable):
+       Iron block, Lapis block, Gold block, Diamond block or Emerald block.
+    </p>
+    <p>Then the Focus blocks are ready to accept energy - supply it for all of them; once the energy is being supplied, the particles show that sphere creation is in progress
+      (here I used Lunar panels):</p>
+    <a href="https://imgur.com/osbQlpa"><img src="https://i.imgur.com/osbQlpa.png" /></a>
+    <p>Once all Focus blocks are full of energy, the offered block will be destroyed and a sphere with a random color will be spawned instead.
+      Right click the sphere's center to claim it.
+    </p>
+      <a href="https://imgur.com/i4b7dX3"><img src="https://i.imgur.com/i4b7dX3.png"/></a>
+      <p>After this you can open Sphere's GUI by right-clicking its center again to see some info and/or set a task:</p>
+      <a href="https://imgur.com/iWxDv3u"><img src="https://i.imgur.com/iWxDv3u.png"/></a>
+      <p>Lastly, know that spheres has no clip and are not affected by gravity - they can go anywhere through any blocks; they attack mobs with a short beam.</p>
+  </body>
+</html>
