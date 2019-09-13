@@ -9,4 +9,10 @@ img{
 
 a:visited{
   color: #bb3a4b;
+
+}
+
+a{
+	display: inline-block;
+	margin-bottom: 10px;
 }
