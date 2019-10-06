@@ -8,11 +8,12 @@ img{
 }
 
 a:visited{
-  color: #bb3a4b;
+  color: #994a34;
 
 }
 
 a{
 	display: inline-block;
 	margin-bottom: 10px;
+	color: #286939;
 }
