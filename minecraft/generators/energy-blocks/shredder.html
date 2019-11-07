@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+    <title>Shredder</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../../../main.css">
+    <link rel="stylesheet" type="text/css" href="../../../prism/prism.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <script src="../../../prism/prism.js"></script>
+    <nav>
+      <ul>
+        <li><a href="../index.html">Front page</a></li>
+        <li><a href="../energy-generators.html">Energy generators</a></li>
+        <li><a href="../energy-blocks.html">Blocks that use energy</a></li>
+        <li><a href="../energy-items.html">Items that use energy</a></li>
+        <li><a href="../non-energy-blocks.html">Blocks that don't use energy</a></li>
+        <li><a href="../entities/companion-sphere.html">Companion Spheres</a></li>
+        <li><a href="../resources.html">Resources</a></li>
+        <li><a href="../fluids.html">Fluids</a></li>
+        <li><a href="../entities.html">Creatures and entities</a></li>
+      </ul>
+    </nav>
+    <P>Shredder produces 1 sugar and 2 Bagasse from 1 sugar cane. Bagasse can be used as a fuel or processed into paper using Paper Mill.</P>
+    <a href="https://imgur.com/HckZhlK"><img src="https://i.imgur.com/HckZhlK.png"/></a>
+    <P>Shredder uses minecraft's system of recipes - by reading them from Json files. If you want to create additional recipes, you must do it the datapack way.</P>
+    <ol>
+      <li>Create a folder for the datapack.</li>
+      <li>Create file inside the folder named "pack.mcmeta". Example:
+        <pre><code class="language-json">
+            {
+              "pack" : {
+                    "pack_format" : 4,
+                    "description" : "Test shredder recipes"
+                }
+            }
+        </code>
+      </pre>
+        "Description" can be any sensible info about the recipes.
+      </li>
+      <li>Create folders "data/[mod/pack identifier]/recipes".</li>
+      <li>Navigate into "recipes" folder.</li>
+      <li>Create Json recipe files (format will be described below).</li>
+      <li>Zip the "data" and "pack.mcmeta" into one archive.</li>
+      <li>Copy the zip file (now a data pack) into directory "minecraft/saves/[World name]/datapacks".</li>
+      <li>Launch the game and check whether your recipes were added.</li>
+    </ol>
+    <h3>Recipe format</h3>
+    <p>
+      Take a look at original shredder recipe:
+      <pre><code class="language-json"> 
+        {
+          "type": "generators:shredder",
+          "input": "minecraft:sugar_cane",
+          "outputs": [
+            {
+              "item": "generators:bagasse",
+              "count": 2
+            },
+            {
+              "item": "minecraft:sugar"
+            }
+          ]
+        }
+      </code></pre>
+      The "type" value must be "generators:shredder"; "input" value is the item identifier; "outputs" is an array of 1 or 2 result itemstacks; "count" is the size of the stack and is optional.
+  </body>
+</html>
