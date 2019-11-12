@@ -14,6 +14,9 @@ a:visited{
 
 a{
 	display: inline-block;
-	margin-bottom: 10px;
 	color: #286939;
+}
+
+.margined-link{
+    margin-bottom: 0.5cm;
 }
