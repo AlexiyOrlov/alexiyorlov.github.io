@@ -21,7 +21,7 @@
     </ul>
 </nav>
 <p>Pusher is a block which is used for moving other blocks in conjunction with Platforms. This is its interface:</p>
-<a href="https://imgur.com/eh7TSrv"><img src="https://i.imgur.com/eh7TSrv.png" title="source: imgur.com"  alt="Interface"/></a>
+<a href="https://imgur.com/eh7TSrv"><img src="https://i.imgur.com/eh7TSrv.png" title="source: imgur.com"  alt="User interface"/></a>
 <p>On receiving a redstone signal, Pusher will attempt to move all Platforms and blocks adjacent to platforms to the direction it is configured to; it will also move any entities
     on top of the blocks. For convenience, Pusher sides have letters that identify the facings of the sides.</p>
 <p>First, pusher checks whether there are any blocks that prevent the movement to target direction. If there are any, then these blocks will be highlighted in the world,
@@ -31,7 +31,7 @@
 <p>If there are no obstacles, pusher will move the blocks (including those with block entities). Be warned that Pusher performs all its work at once, in a single tick. Although it is
     optimized, it still can cause lag proportional to the number of moved blocks, and dependent on computational power of your computer.
     You can set a limit of how many <a href="platform.html">platforms</a>  the Pusher can
-    move in the settings.</p>
+    move in the settings. If something goes wrong with the Pusher, you can globally disable it in the settings as well.</p>
 <h3>Technical details</h3>
 <p>In fact, Platform's and <a href="pipe-relocator.html">Pipe-Relocator's</a> block entities implement the same interface which allows the Pusher to treat them as
     "block entities that can move other blocks". In theory, any other block with block entity which implements that interface can be used in such way. It can be exposed in the API
