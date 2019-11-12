@@ -30,7 +30,11 @@
 <P>Color of highlight is configurable.</P>
 <p>If there are no obstacles, pusher will move the blocks (including those with block entities). Be warned that Pusher performs all its work at once, in a single tick. Although it is
     optimized, it still can cause lag proportional to the number of moved blocks, and dependent on computational power of your computer.
-    You can set a limit of how many platforms the Pusher can
+    You can set a limit of how many <a href="platform.html">platforms</a>  the Pusher can
     move in the settings.</p>
+<h3>Technical details</h3>
+<p>In fact, Platform's and <a href="pipe-relocator.html">Pipe-Relocator's</a> block entities implement the same interface which allows the Pusher to treat them as
+    "block entities that can move other blocks". In theory, any other block with block entity which implements that interface can be used in such way. It can be exposed in the API
+    if someone wants to create own platform-like blocks.</p>
 </body>
 </html>
