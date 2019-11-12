@@ -7,15 +7,16 @@ img{
   margin: 5mm;
 }
 
-a:visited{
-  color: #994a34;
-
-}
-
 a{
-	display: inline-block;
-	color: #286939;
+    display: inline-block;
+    color: #276132;
+    text-decoration-style: dotted;
 }
+/*These pseudoclasses are restricted*/
+a:visited{
+  color: #7d3a80;
+}
+
 
 .margined-link{
     margin-bottom: 0.5cm;
