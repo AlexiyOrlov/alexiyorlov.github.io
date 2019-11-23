@@ -2,12 +2,388 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Netty server</title>
+    <title>Simple Netty server</title>
     <link rel="stylesheet" href="../prism/prism-dark.css">
     <link rel="stylesheet" href="../main.css">
 </head>
 <body>
+<script src="../prism/prism-dark.js"></script>
 <h2>This tutorial describes how to make a minimal server program with command-line interface</h2>
-<p></p>
+<p>First of all, let's make a stub of a server:</p>
+<pre><code class="language-java">
+public class CLIServer
+{
+    private ChannelFuture future;
+    private NioEventLoopGroup masterGroup;
+    private NioEventLoopGroup workerGroup;
+
+    // remember that arbitrary network ports start at 49152 and end with 65535
+    public CLIServer(int networkPort)
+    {
+        // these groups handle all I/O and events
+        masterGroup = new NioEventLoopGroup();
+        workerGroup = new NioEventLoopGroup();
+        try
+        {
+            // the bootstrap is used to simplify server setup
+            ServerBootstrap serverBootstrap = new ServerBootstrap();
+            serverBootstrap.group(masterGroup, workerGroup);
+            serverBootstrap.channel(NioServerSocketChannel.class);
+            // The "backlog" argument is a maximum requested number of pending connections on the socket.
+            // Its exact effects are implementation specific.
+            // In particular, an implementation may impose a maximum length or may choose to ignore the parameter altogether.
+            // The value should be greater than 0, otherwise an implementation specific default will be used.
+            serverBootstrap.option(ChannelOption.SO_BACKLOG,128);
+            serverBootstrap.childOption(ChannelOption.SO_KEEPALIVE,true);
+            serverBootstrap.childHandler(new ChannelInitializer&lt;SocketChannel&gt;()
+            {
+                @Override
+                protected void initChannel(SocketChannel ch)
+                {
+                    //TODO
+                }
+            }).validate();
+            // start the server (bind) and wait until it stops (sync)
+            future = serverBootstrap.bind(networkPort).sync();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre>
+<p>Next, we make a main class which will start the server;
+    Apache Logging library will be used for logging (group: 'org.apache.logging.log4j', name: 'log4j-core', version:
+    '2.12.1').</p>
+<pre><code class="language-java">
+public class Starter
+{
+    private static CLIServer SERVER_INSTANCE;
+    private static Logger logger;
+
+    public static void main(String[] strings)
+    {
+        logger = LogManager.getLogger(CLIServer.class.getSimpleName(), new ParameterizedMessageFactory());
+        logger.info(logger.getName() + " initialized");
+        logger.info("Type \"exit\" to stop the program");
+
+        SERVER_INSTANCE = new CLIServer(59433);
+
+        // It will read input from the console and stop the program if we type "exit"
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        String s;
+        try
+        {
+            while ((s = reader.readLine()) != null)
+            {
+                if (s.equals("exit"))
+                {
+                    //TODO
+                    break;
+                }
+            }
+            reader.close();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    static CLIServer getServerInstance()
+    {
+        return SERVER_INSTANCE;
+    }
+
+    public static Logger getLogger()
+    {
+        return logger;
+    }
+
+}
+</code></pre>
+<p>Here is a simple log configuration which is used for the logger; it is set to log both to console and file:</p>
+<pre><code class="language-xml">
+<?xml version="1.0" encoding="UTF-8"?>
+    &lt;Configuration status="INFO"&gt;
+    &lt;Properties&gt;
+        &lt;Property name="messagePart"&gt;%msg&lt;/Property&gt;
+        &lt;Property name="recordPart"&gt;%d{MM/dd HH:mm:ss} %logger{36} -> %-5level:&lt;/Property&gt;
+    &lt;/Properties&gt;
+    &lt;Appenders&gt;
+        &lt;Console name="Console" target="SYSTEM_OUT"&gt;
+            &lt;PatternLayout&gt;
+                &lt;Pattern&gt;${recordPart} %highlight{${messagePart}}{INFO=cyan,WARN=yellow,ERROR=red,FATAL=red}%n&lt;/Pattern&gt;
+            &lt;/PatternLayout&gt;
+        &lt;/Console&gt;
+
+        &lt;File name="FileAppend" fileName="server.log" append="false"&gt;
+            &lt;PatternLayout&gt;
+                &lt;Pattern&gt;${recordPart} ${messagePart}%n&lt;/Pattern&gt;
+            &lt;/PatternLayout&gt;
+        &lt;/File&gt;
+    &lt;/Appenders&gt;
+
+    &lt;Loggers&gt;
+        &lt;Root level="info"&gt;
+            &lt;AppenderRef ref="Console"/&gt;
+            &lt;AppenderRef ref="FileAppend"/&gt;
+        &lt;/Root&gt;
+    &lt;/Loggers&gt;
+&lt;/Configuration&gt;
+</code> </pre>
+<p>Place it into the resources directory and name it "log4j2.xml".</p>
+<p>Then we add a shutdown method to the server:</p>
+<pre><code class="language-java">
+    void shutdown()
+    {
+        Starter.getLogger().info("Stopping server");
+        // using a separate thread for this so the server is able to shutdown from itself
+        Thread thread=new Thread(()->{
+            try
+            {
+                Starter.getLogger().debug(3);
+                // the order in which the objects are de-allocated does matter
+                masterGroup.shutdownGracefully().sync();
+                Starter.getLogger().debug(2);
+                workerGroup.shutdownGracefully().sync();
+                Starter.getLogger().debug(1);
+                future.channel().closeFuture().sync();
+                Starter.getLogger().info("Server stopped");
+                System.exit(0);
+            }
+            catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+        },"Server down-shutter");
+        thread.start();
+    }
+</code> </pre>
+<p>Call this method in the <b>Starter's</b> loop:</p>
+<pre><code class="language-java">
+    while ((s = reader.readLine()) != null)
+    {
+        if (s.equals("exit"))
+        {
+            SERVER_INSTANCE.shutdown();
+            break;
+        }
+    }
+</code></pre>
+<p>Now we should be able to start the server via Starter, and stop it by typing "exit" in the console.</p>
+<p>Next, we can start adding inbound channel handlers to our server. The first handler will be called "CommandHandler"
+    and will simulate predefined command execution:</p>
+<pre><code class="language-java">
+public class CommandHandler extends ChannelInboundHandlerAdapter
+{
+    // The "msg" parameter is usually an instance of ByteBuf subclass.
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg)
+    {
+        if(msg instanceof ByteBuf)
+        {
+            ByteBuf byteBuf = (ByteBuf) msg;
+        }
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
+    {
+        cause.printStackTrace();
+    }
+}
+</code></pre>
+<P><b>ByteBuf</b> has many <i>read*</i> methods. Explaining them all is not in scope of this tutorial - we will use only
+    <i>readCharSequence</i>. We'll create 2 commands:
+    "quit" and "stop"; every other input will be printed back to console:</P>
+<pre><code class="language-java">
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg)
+    {
+        if(msg instanceof ByteBuf)
+        {
+            ByteBuf byteBuf= (ByteBuf) msg;
+            // read UTF-8 char-sequence
+            final CharSequence charSequence = byteBuf.readCharSequence(byteBuf.readableBytes(), StandardCharsets.UTF_8);
+            // It is more convenient to work with strings than char-sequences
+            final String string=charSequence.toString();
+            //get rid of whitespace, including line breaks
+            String trimmed=string.trim();
+            if(trimmed.equals("quit"))
+            {
+                // this command just terminates a session between server and client
+                ctx.close();
+            }
+            else if(trimmed.equals("stop"))
+            {
+                // this command stops the server (as well as whole program)
+                Starter.getServerInstance().shutdown();
+                ctx.close();
+            }
+            else
+            {
+                // everything else is being written into the buffer...
+                byteBuf.writeCharSequence("Unknown command: "+charSequence,StandardCharsets.UTF_8);
+                //...and sent back to the console
+                ctx.writeAndFlush(byteBuf);
+            }
+        }
+    }
+</code></pre>
+<p>Next, add this handler to the server channel:</p>
+<pre><code class="language-java">
+    ...
+    serverBootstrap.childHandler(new ChannelInitializer&lt;SocketChannel&gt;()
+    {
+        @Override
+        protected void initChannel(SocketChannel ch)
+        {
+            ch.pipeline().addLast(new CommandHandler());
+        }
+    }).validate();
+    ...
+</code> </pre>
+<p>Now start the program and try to connect to the server using some text-based protocol program - for example, on Unix
+    you can use "nc", on Windows you can use "telnet":</p>
+<p><i>nc localhost 59433</i></p>
+<p><i>telnet localhost 59433</i></p>
+<P>Test the commands. If everything was done correctly, <i>quit</i> will close the connection, <I>stop</I> will start
+    shutdown, and everything else will be printed back as
+    "unknown command".</P>
+<p>Now let's add a different channel handler - it will generate random integers or random floats depending on input.
+    Looks really simple:</p>
+<pre><code class="language-java">
+public class RandomNumbers extends ChannelInboundHandlerAdapter
+{
+    private Random random = new Random();
+
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg)
+    {
+        if (msg instanceof ByteBuf)
+        {
+            ByteBuf byteBuf = (ByteBuf) msg;
+            final String string = byteBuf.readCharSequence(byteBuf.readableBytes(), StandardCharsets.UTF_8).toString();
+            String trimmed = string.trim();
+            // generate random integer
+            if (trimmed.equals("random i"))
+            {
+                int ri = random.nextInt();
+                byteBuf.writeCharSequence(String.valueOf(ri) + '\n', StandardCharsets.UTF_8);
+                ctx.writeAndFlush(byteBuf);
+            }
+            // generate random float
+            else if (trimmed.equals("random f"))
+            {
+                float rf = random.nextFloat();
+                byteBuf.writeCharSequence(String.valueOf(rf) + '\n', StandardCharsets.UTF_8);
+                ctx.writeAndFlush(byteBuf);
+            }
+        }
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
+    {
+        cause.printStackTrace();
+    }
+}
+</code> </pre>
+<p>Add it after the CommandHandler:</p>
+<pre><code class="language-java">
+    @Override
+    protected void initChannel(SocketChannel ch)
+    {
+        ch.pipeline().addLast(new CommandHandler(), new RandomNumbers());
+    }
+</code> </pre>
+<p>Although the handler was added, it won't work because <b>CommandHandler</b> doesn't pass the message down the
+    pipeline. To fix it, replace the last <i>else</i> block
+    (where it prints "unknown command") with this block:</p>
+<pre><code class="language-java">
+    else
+    {
+        try
+        {
+            // reset reader index so the message can be read again
+            byteBuf.resetReaderIndex();
+            // super method passes the message to the next handler
+            super.channelRead(ctx, msg);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+</code> </pre>
+<p>That will make the second handler receive the same ByteBuf with the message available again.</p>
+<h3>Conclusion</h3>
+<p>Hopefully, this article will help you to get into Netty and master the basics of it. Just in case, here is the final
+    code of the server:</p>
+<pre><code class="language-java">
+class CLIServer
+{
+    private ChannelFuture future;
+    private NioEventLoopGroup masterGroup;
+    private NioEventLoopGroup workerGroup;
+
+    CLIServer(int networkPort)
+    {
+        masterGroup = new NioEventLoopGroup();
+        workerGroup = new NioEventLoopGroup();
+        try
+        {
+            ServerBootstrap serverBootstrap = new ServerBootstrap();
+            serverBootstrap.group(masterGroup, workerGroup);
+            serverBootstrap.channel(NioServerSocketChannel.class);
+            //The value provided should be greater than 0, otherwise an implementation specific default will be used.
+            serverBootstrap.option(ChannelOption.SO_BACKLOG, 128);
+            serverBootstrap.childOption(ChannelOption.SO_KEEPALIVE, true);
+            serverBootstrap.childHandler(new ChannelInitializer&lt;SocketChannel&gt;()
+            {
+                @Override
+                protected void initChannel(SocketChannel ch)
+                {
+                    ch.pipeline().addLast(new CommandHandler(), new RandomNumbers());
+                }
+            }).validate();
+            future = serverBootstrap.bind(networkPort).sync();
+            Starter.getLogger().info("Started server on port {}", networkPort);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            shutdown();
+        }
+    }
+
+    void shutdown()
+    {
+        Starter.getLogger().info("Stopping server");
+        // using a separate thread for this so the server is able to shutdown from itself
+        Thread thread = new Thread(() -> {
+            try
+            {
+                Starter.getLogger().debug(3);
+                // the order in which the objects are de-allocated does matter
+                masterGroup.shutdownGracefully().sync();
+                Starter.getLogger().debug(2);
+                workerGroup.shutdownGracefully().sync();
+                Starter.getLogger().debug(1);
+                future.channel().closeFuture().sync();
+                Starter.getLogger().info("Server stopped");
+                System.exit(0);
+            }
+            catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+        }, "Server down-shutter");
+        thread.start();
+    }
+}
+</code> </pre>
 </body>
 </html>
