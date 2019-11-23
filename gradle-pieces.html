@@ -20,7 +20,7 @@
             Building a jar that includes only parts of a project.
             <DIV>
                 Suppose I have a package "api" that I want to build separate:
-            <pre><code class="language-gradle">
+            <pre><code class="language-groovy">
                 task apiJar(type: Jar, group: "build", description: 'Assembles the API') {
                     setClassifier("api")
                     from sourceSets.main.allSource
@@ -33,7 +33,7 @@
         <li>
             Publishing a package to Bintray. I need to know my Bintray key; have a maven repository there; VCS URL to the project's code repository.
             Bintray plugin reuses Maven publishing plugin, so I need them:
-            <pre><code class="language-gradle">
+            <pre><code class="language-groovy">
                 plugins {
                     id 'maven-publish'
                     id "com.jfrog.bintray" version "1.8.4"
@@ -41,7 +41,7 @@
             </code></pre>
             I must set project version and maven group - setVersion(), setGroup().
             Then I must configure maven publications:
-            <pre><code class="language-gradle">
+            <pre><code class="language-groovy">
                 publishing {
                     publications {
                         //"projectName" is arbitrary, used to reference the publication in the script
@@ -62,7 +62,7 @@
                 }
             </code></pre>
             Next, need to define a repository to publish to:
-            <pre><code class="language-gradle">
+            <pre><code class="language-groovy">
                 repositories {
                     maven{
                         setUrl('https://dl.bintray.com/alexiy/maven-repository')
@@ -70,7 +70,7 @@
                 }
             </code></pre>
             Then, configure the bintray task:
-            <pre><code class="language-gradle">
+            <pre><code class="language-groovy">
                 bintray{
                     user= System.getProperty("username")
                     key= System.getProperty("key")
