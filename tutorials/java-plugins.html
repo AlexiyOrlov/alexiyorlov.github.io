@@ -37,7 +37,6 @@
         <li>Create a folder "src/main/java" in this folder (standard Gradle source set);</li>
         <li>Write a line "include ('Implementation')" in the "settings.gradle";</li>
         <li>We will change the main build file slightly, so the 'java' plugin and top project repositories are applied to all projects:
-
             <pre><code class='language-groovy'>
     // Apply the java plugin to add support for Java
     allprojects {
@@ -95,57 +94,57 @@
         The class will be instantiated via default constructor and its "load()" method will be called.</p>
 
     <pre><code class='language-java'>
-       static final String PLUGIN_FOLDER="plugins";
-       public static void main(String[] args) {
-            File pluginFolder=new File(PLUGIN_FOLDER);
-            if(!pluginFolder.exists())
+   static final String PLUGIN_FOLDER="plugins";
+   public static void main(String[] args) {
+        File pluginFolder=new File(PLUGIN_FOLDER);
+        if(!pluginFolder.exists())
+        {
+            if(pluginFolder.mkdirs())
             {
-                if(pluginFolder.mkdirs())
-                {
-                    System.out.println("Created plugin folder");
-                };
-            }
-            File[] files=pluginFolder.listFiles((dir, name) -> name.endsWith(".jar"));
-            ArrayList&lt;URL&gt; urls=new ArrayList&lt;&gt;();
-            ArrayList&lt;String&gt; classes=new ArrayList&lt;&gt;();
-            if(files!=null) {
-                Arrays.stream(files).forEach(file -> {
-                    try {
-                        JarFile jarFile=new JarFile(file);
-                        urls.add(new URL("jar:file:"+PLUGIN_FOLDER+"/"+file.getName()+"!/"));
-                        jarFile.stream().forEach(jarEntry -> {
-                            if(jarEntry.getName().endsWith(".class"))
-                            {
-                                classes.add(jarEntry.getName());
-                            }
-                        });
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
-                URLClassLoader pluginLoader=new URLClassLoader(urls.toArray(new URL[urls.size()]));
-                classes.forEach(s -> {
-                    try {
-                        Class classs=pluginLoader.loadClass(s.replaceAll("/",".").replace(".class",""));
-                        Class[] interfaces=classs.getInterfaces();
-                        for (Class anInterface : interfaces) {
-                            if(anInterface==Plugin.class)
-                            {
-                                Plugin plugin= (Plugin) classs.newInstance();
-                                if(plugin.load())
-                                {
-                                    System.out.println("Loaded plugin "+classs.getCanonicalName()+" successfully");
-                                }
-                                break;
-                            }
-                        }
-                    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
-                });
-            }
-            System.out.println("Application stopped.");
+                System.out.println("Created plugin folder");
+            };
         }
+        File[] files=pluginFolder.listFiles((dir, name) -> name.endsWith(".jar"));
+        ArrayList&lt;URL&gt; urls=new ArrayList&lt;&gt;();
+        ArrayList&lt;String&gt; classes=new ArrayList&lt;&gt;();
+        if(files!=null) {
+            Arrays.stream(files).forEach(file -> {
+                try {
+                    JarFile jarFile=new JarFile(file);
+                    urls.add(new URL("jar:file:"+PLUGIN_FOLDER+"/"+file.getName()+"!/"));
+                    jarFile.stream().forEach(jarEntry -> {
+                        if(jarEntry.getName().endsWith(".class"))
+                        {
+                            classes.add(jarEntry.getName());
+                        }
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            URLClassLoader pluginLoader=new URLClassLoader(urls.toArray(new URL[urls.size()]));
+            classes.forEach(s -> {
+                try {
+                    Class classs=pluginLoader.loadClass(s.replaceAll("/",".").replace(".class",""));
+                    Class[] interfaces=classs.getInterfaces();
+                    for (Class anInterface : interfaces) {
+                        if(anInterface==Plugin.class)
+                        {
+                            Plugin plugin= (Plugin) classs.newInstance();
+                            if(plugin.load())
+                            {
+                                System.out.println("Loaded plugin "+classs.getCanonicalName()+" successfully");
+                            }
+                            break;
+                        }
+                    }
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+        System.out.println("Application stopped.");
+    }
     </code></pre>
     <p>As you can see, the application now gets all .jar files from "plugins" folder, creates a list of
         class URLs and names. Then a URLClassLoader is used to handle these URLs and
