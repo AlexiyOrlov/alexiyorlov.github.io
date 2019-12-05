@@ -21,12 +21,12 @@
             <DIV>
                 Suppose I have a package "api" that I want to build separate:
             <pre><code class="language-groovy">
-                task apiJar(type: Jar, group: "build", description: 'Assembles the API') {
-                    setClassifier("api")
-                    from sourceSets.main.allSource
-                    from sourceSets.main.output
-                    include 'alexiy/bla/bla/bla/api/**'
-                }
+            task apiJar(type: Jar, group: "build", description: 'Assembles the API') {
+                setClassifier("api")
+                from sourceSets.main.allSource
+                from sourceSets.main.output
+                include 'alexiy/bla/bla/bla/api/**'
+            }
             </code></pre>
             </DIV>
         </li>
@@ -34,63 +34,63 @@
             Publishing a package to Bintray. I need to know my Bintray key; have a maven repository there; VCS URL to the project's code repository.
             Bintray plugin reuses Maven publishing plugin, so I need them:
             <pre><code class="language-groovy">
-                plugins {
-                    id 'maven-publish'
-                    id "com.jfrog.bintray" version "1.8.4"
-                }
+            plugins {
+                id 'maven-publish'
+                id "com.jfrog.bintray" version "1.8.4"
+            }
             </code></pre>
             I must set project version and maven group - setVersion(), setGroup().
             Then I must configure maven publications:
             <pre><code class="language-groovy">
-                publishing {
-                    publications {
-                        //"projectName" is arbitrary, used to reference the publication in the script
-                        projectName(MavenPublication) {
-                            //this is the artifact ID. Defaults to archive base name if not set
-                            artifactId 'some-artifact'
-                            // add all jars to be included for publishing
-                            artifact(jar) {
-                                builtBy remapJar
-                            }
-                            artifact(sourcesJar) {
-                                builtBy remapSourcesJar
-                            }
-                            artifact apiJar
-                            artifact makeApiSource
+            publishing {
+                publications {
+                    //"projectName" is arbitrary, used to reference the publication in the script
+                    projectName(MavenPublication) {
+                        //this is the artifact ID. Defaults to archive base name if not set
+                        artifactId 'some-artifact'
+                        // add all jars to be included for publishing
+                        artifact(jar) {
+                            builtBy remapJar
                         }
+                        artifact(sourcesJar) {
+                            builtBy remapSourcesJar
+                        }
+                        artifact apiJar
+                        artifact makeApiSource
                     }
                 }
+            }
             </code></pre>
             Next, need to define a repository to publish to:
             <pre><code class="language-groovy">
-                repositories {
-                    maven{
-                        setUrl('https://dl.bintray.com/alexiy/maven-repository')
-                    }
+            repositories {
+                maven{
+                    setUrl('https://dl.bintray.com/alexiy/maven-repository')
                 }
+            }
             </code></pre>
-            Then, configure the bintray task:
+            Then, configure the bintray task. The properties "username" and "key" must be set out of the project if you are not working on this project alone.
+            Store them in a simple text file (ignored by Git) and read them when needed:
             <pre><code class="language-groovy">
-                bintray{
-                    user= System.getProperty("username")
-                    key= System.getProperty("key")
-                    pkg{
-                        //set to true to simulate the publishing, without uploading
-                        dryRun=false
-                        //select the repository to target
-                        repo='maven-repository'
-                        //package name
-                        name='some-package'
-                        licenses=['gpl-3.0']
-                        //url to code repository
-                        vcsUrl='https://github.com/AlexiyOrlov/project-source'
-                        //select publications to upload, which you defined in "publishing" configuration
-                        publications=['projectName']
-                    }
+            bintray{
+                user= System.getProperty("username")
+                key= System.getProperty("key")
+                pkg{
+                    //set to true to simulate the publishing, without uploading
+                    dryRun=false
+                    //select the repository to target
+                    repo='maven-repository'
+                    //package name
+                    name='some-package'
+                    licenses=['gpl-3.0']
+                    //url to code repository
+                    vcsUrl='https://github.com/AlexiyOrlov/project-source'
+                    //select publications to upload, which you defined in "publishing" configuration
+                    publications=['projectName']
                 }
+            }
             </code></pre>
-            The properties "username" and "key" must be set out of the project if you are not working on this project alone.
-            Store them in a simple text file (ignored by Git) and read them when needed.
+
         </li>
     </ol>
 </body>
