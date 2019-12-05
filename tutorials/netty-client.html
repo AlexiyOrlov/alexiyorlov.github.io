@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Netty client</title>
+    <link rel="stylesheet" href="../prism/prism-dark.css">
+    <link rel="stylesheet" href="../main.css">
+</head>
+<body>
+<script src="../prism/prism-dark.js"></script>
+<h2>This tutorial shows how to create a simple netty client with command-line interface</h2>
+<P>Prerequisite - a string-based protocol server, can be the one from <a href="netty.html">Netty server tutorial</a>.</P>
+<p>The base code of a client is similar to the one of the server:</p>
+<pre><code class="language-java">
+    public class CLIClient
+    {
+        ChannelFuture future;
+        EventLoopGroup workergroup;
+
+        public CLIClient(String host, int port)
+        {
+            workergroup = new NioEventLoopGroup();
+            try
+            {
+                Bootstrap bootstrap = new Bootstrap();
+                bootstrap.group(workergroup);
+                bootstrap.channel(NioSocketChannel.class);
+                bootstrap.option(ChannelOption.SO_KEEPALIVE, true);
+                bootstrap.handler(new ChannelInitializer&lt;SocketChannel&gt;()
+                {
+                    @Override
+                    protected void initChannel(SocketChannel ch)
+                    {
+                        //TODO
+                    }
+                });
+
+                future = bootstrap.connect(host, port).sync();
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+                workergroup.shutdownGracefully();
+                System.exit(1);
+            }
+        }
+
+        void shutdown()
+        {
+            try
+            {
+                workergroup.shutdownGracefully();
+                future.channel().closeFuture().sync();
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
+</code>
+</pre>
+<p>Its constructor has a 'host' parameter (a target to connect to) and 'port' parameter.</p>
+<p>Then, write a main class that starts the client:</p>
+
+<pre><code class="language-java">
+    public class ClientStarter
+    {
+        //Apache logger
+        static Logger LOGGER;
+
+        public static void main(String[] strings)
+        {
+            LOGGER = LogManager.getLogger("Client", new ParameterizedMessageFactory());
+            String host = "localhost";
+            // This is the same port the server is listening to
+            int port = 59433;
+            CLIClient cliClient = new CLIClient(host, port);
+
+            // prepare the input from console
+            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+            String s;
+            try
+            {
+                LOGGER.info("Console input ready");
+                while ((s = reader.readLine()) != null)
+                {
+                    if (s.equals("exit"))
+                    {
+                        cliClient.shutdown();
+                        break;
+                    }
+                    else
+                    {
+                        // This statement passes other strings to the client to handle
+                        cliClient.future.channel().writeAndFlush(s);
+                    }
+                }
+                reader.close();
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+                System.exit(1);
+            }
+
+        }
+    }
+</code></pre>
+<p>Now test the connection: start the server; when the server is ready, start this client. The client will throw an exception if it couldn't connect to a server on that port.
+As we are using string protocol, we can add existing handlers to decode ingoing and encode outgoing string messages - <code class="language-java">io.netty.handler.codec.string.StringDecoder</code> and <code class="language-java">io.netty.handler.codec.string.LineEncoder</code>:</p>
+
+<pre><code class="language-java">
+    bootstrap.handler(new ChannelInitializer&lt;SocketChannel&gt;()
+        {
+            @Override
+            protected void initChannel(SocketChannel ch)
+            {
+                ch.pipeline().addLast(new LineEncoder(LineSeparator.UNIX), new StringDecoder(), new ResponseHandler());
+            }
+        });
+</code> </pre>
+<p>Now anything we write into client console will be auto-encoded to a String message by the LineEncoder; likewise, responses from the server will be decoded to a String and passed to a <i>ResponseHandler</i>,
+which is a custom handler that logs the messages:</p>
+<pre><code class="language-java">
+    public class ResponseHandler extends ChannelInboundHandlerAdapter
+    {
+        @Override
+        public void channelRead(ChannelHandlerContext ctx, Object msg)
+        {
+            // The message was decoded to a string by the StringDecoder, so we can cast it safely.
+            String mString = (String) msg;
+            ClientStarter.LOGGER.info(mString.trim());
+        }
+
+        @Override
+        public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
+        {
+            cause.printStackTrace();
+        }
+    }
+</code></pre>
+<p>Final client code:</p>
+<pre><code class="language-java">
+    public class CLIClient
+    {
+        ChannelFuture future;
+        EventLoopGroup workergroup;
+
+        public CLIClient(String host, int port)
+        {
+            workergroup = new NioEventLoopGroup();
+            try
+            {
+                Bootstrap bootstrap = new Bootstrap();
+                bootstrap.group(workergroup);
+                bootstrap.channel(NioSocketChannel.class);
+                bootstrap.option(ChannelOption.SO_KEEPALIVE, true);
+                bootstrap.handler(new ChannelInitializer&lt;SocketChannel&gt;()
+                {
+                    @Override
+                    protected void initChannel(SocketChannel ch)
+                    {
+                        ch.pipeline().addLast(new LineEncoder(LineSeparator.UNIX), new StringDecoder(), new ResponseHandler());
+                    }
+                });
+
+                future = bootstrap.connect(host, port).sync();
+                ClientStarter.LOGGER.info("Connected to {} on {}", host, port);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+                workergroup.shutdownGracefully();
+                System.exit(1);
+            }
+        }
+
+        void shutdown()
+        {
+            try
+            {
+                ClientStarter.LOGGER.info("Shutting down");
+                workergroup.shutdownGracefully();
+                future.channel().closeFuture().sync();
+                ClientStarter.LOGGER.info("Shutdown successful");
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
+</code></pre>
+<p>Now you can further enhance your server and client to fit your needs. This is the end of the tutorial.</p>
+<A href="../index.html">Main page</A>
+</body>
+</html>
