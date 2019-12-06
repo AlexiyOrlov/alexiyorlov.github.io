@@ -107,6 +107,37 @@
         </code></pre>
     </DIV>
 
+    <DIV>
+        <h4>Inheriting dependencies of an arbitrary project</h4>
+        <p>Let's suppose we have a main project and 2 subprojects.</p>
+        <pre><code>
+            main-project
+            |--subproject-alpha
+            |--subproject-beta
+        </code></pre>
+        <P>Main project contains dependencies that we want to use in both subprojects, and we also want to use main project's code. We can achieve that without using plugins by adding following code to
+            the subprojects' build scripts:
+        </P>
+        <pre><code class="language-groovy">
+    dependencies {
+            //depend on the root project
+        implementation project(':')
+            //depend on all of the root project's dependencies
+        rootProject.configurations.each {configuration->
+            configuration.dependencies.each {dependency->
+                dependencies.add(configuration.name,dependency)
+            }
+        }
+    }
+        </code> </pre>
+        <p>We can also add dependencies of specific configurations only. Here is how to add dependencies of test configurations:</p>
+        <pre><code class="language-groovy">
+    rootProject.configurations.testImplementation.dependencies.each {dep->
+        dependencies.add('testImplementation',dep)
+    }
+        </code> </pre>
+        As you can see, we're achieving this mostly by using Groovy code rather than Gradle utilities.
+    </DIV>
     <h4>(Website is under construction)</h4>
     <h4>All rights reserved, 2019</h4>
     </body>
