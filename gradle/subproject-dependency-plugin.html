@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Subproject dependency plugin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../prism/prism-dark.css">
+    <link rel="stylesheet" href="../main.css">
+</head>
+<body>
+<script src="../prism/prism-dark.js"></script>
+<H2>What is this?</H2>
+<p>This is a page about "io.github.alexiyorlov.gradle.subdeps" Gradle plugin (further called "SPD"). It shows the use cases for this plugin and how to configure it.</p>
+<h2>Use case</h2>
+<P>
+    SPD is intended to work in a multi-module project (project with sub-projects). Its goal is to administer subproject's dependencies from the main project.
+    With default configuration SPD "passes" all parent project dependency configurations to all of its sub-projects and adds a dependency on the parent itself.
+    Reminder: subprojects are defined in the 'settings.gradle' file of the parent project. Initially SPD is set to simulate its work, because it applies to the project immediately
+    after evaluation.
+</P>
+<h3>Usage</h3>
+<p>SPD adds an extension "subprojectDeps", where you can configure it. Here is a small example how to do that:</p>
+<pre><code class="language-groovy">
+buildscript {
+    repositories {
+        mavenLocal()
+    }
+    dependencies {
+        classpath('io.github.alexiyorlov:gradle-subproject-deps:0.1')
+    }
+}
+plugins {
+    id 'java'
+}
+
+apply plugin: "io.github.alexiyorlov.gradle.subdeps"
+
+...
+
+subprojectDeps{
+    simulate(false)
+    dependOnParent(true)
+    setPassedConfigurations("implementation")
+    excludeProjects('subproject2')
+
+}
+
+dependencies {
+    implementation('com.google.code.findbugs:jsr305:3.0.2')
+    testImplementation group: 'junit', name: 'junit', version: '4.12'
+    ...
+}
+</code></pre>
+<P>Thus you can avoid re-declaring dependencies in the subprojects.</P>
+<ul>
+    <li><b>simulate()</b> instructs whether to simulate the work</li>
+    <li><b>dependOnParent()</b> instructs whether to add a dependency on the parent project</li>
+    <li><b>setPassedConfigurations()</b> can be used to specify which configurations to pass; default is all</li>
+    <li><b>excludeProjects()</b> is used to specify projects to skip</li>
+</ul>
+</body>
+</html>
