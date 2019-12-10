@@ -10,7 +10,7 @@
 <body>
 <script src="../prism/prism-dark.js"></script>
 <H2>What is this?</H2>
-<p>This is a page about "io.github.alexiyorlov.gradle.subdeps" Gradle plugin (further called "SPD"). It shows the use cases for this plugin and how to configure it.</p>
+<p>This is a page about <b>io.github.alexiyorlov.gradle.subdeps</b> Gradle plugin (further called "SPD"). It shows the use cases for this plugin and how to configure it.</p>
 <h2>Use case</h2>
 <P>
     SPD is intended to work in a multi-module project (project with sub-projects). Its goal is to administer subproject's dependencies from the main project.
@@ -21,19 +21,10 @@
 <h3>Usage</h3>
 <p>SPD adds an extension "subprojectDeps", where you can configure it. Here is a small example how to do that:</p>
 <pre><code class="language-groovy">
-buildscript {
-    repositories {
-        mavenLocal()
-    }
-    dependencies {
-        classpath('io.github.alexiyorlov:gradle-subproject-deps:0.1')
-    }
-}
 plugins {
     id 'java'
+    id 'io.github.alexiyorlov.gradle.subdeps' version [version]
 }
-
-apply plugin: "io.github.alexiyorlov.gradle.subdeps"
 
 ...
 
