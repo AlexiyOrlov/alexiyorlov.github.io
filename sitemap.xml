@@ -4,13 +4,6 @@
 		<loc>https://alexiyorlov.github.io/index.html</loc>
 	</url>
 	<url>
-		<loc>https://alexiyorlov.github.io/minecraft/generators/index.html</loc>
-		<changefreq>weekly</changefreq>
-	</url>
-	<url>
-		<loc>https://alexiyorlov.github.io/minecraft/fabric/fabric.html</loc>
-	</url>
-	<url>
 		<loc>https://alexiyorlov.github.io/gradle/subproject-dependency-plugin.html</loc>
 	</url>
 </urlset>
