@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Changing Java path</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../prism/prism-dark.css">
+    <link rel="stylesheet" href="../main.css">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a class="margined-link" href="../index.html">Main page</a></li>
+        </ul>
+    </nav>
+    <p>This short article shows how to change used Java installation on a Windows system.</p>
+    <h3>On Windows 7</h3>
+    <ul>
+        <li>
+            Open environment variables window (by right-clicking "Computer" icon, selecting "Advanced system properties", then selecting "Advanced" tab, and pressing "Environment variables" button).
+        </li>
+        <li>Check "JAVA_HOME" variable for existence in the "System variables" list. If it doesn't exist, create it (paste the desired Java installation path in the "Variable value" field),
+            otherwise, just change the value accordingly. The path should look like "C:\Users\Alexiy\openjdk-14.0.1_windows-x64_bin\jdk-14.0.1".
+        </li>
+        <LI>
+            Check the "Path" variable for other existing Java paths - you will have to press "Edit" and scroll the value text field all the way to the left by the arrow key. If you encounter
+            previous Java mentions, then you must place the Java home variable before them; do it by writing "%JAVA_HOME%\bin;". Press OKs to apply changes and close the dialogs.
+        </LI>
+        <li>Open a new command prompt and run "java -version". It should show the new Java path if everything was done correctly.</li>
+    </ul>
+</body>
+</html>
