@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Installing Javafx</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../prism/prism-dark.css">
+    <link rel="stylesheet" href="../main.css">
+</head>
+<body>
+<nav>
+    <ul>
+        <li><a class="margined-link" href="../index.html">Main page</a></li>
+    </ul>
+    <p>This article instructs how to install JavaFX and run applications requiring it.</p>
+    <h3>Linux</h3>
+    <ul>
+        <li>Download SDK for linux from <a href="https://gluonhq.com/products/javafx/">gluonhq</a>.</li>
+        <li>Create an environment variable for Javafx runtime using terminal:
+            <b>export PATH_TO_FX=[absolute path to its folder]/lib</b>
+        </li>
+        <li>Test the runtime by running an application using Javafx:
+            <b>java -jar --module-path $PATH_TO_FX --add-modules javafx.controls some.jar</b>
+        </li>
+    </ul>
+</nav>
+</body>
+</html>

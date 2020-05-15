@@ -12,7 +12,7 @@ a{
     color: #276132;
     text-decoration-style: dotted;
 }
-/*These pseudoclasses are restricted*/
+/*These pseudoclasses are limited*/
 a:visited{
   color: #7d3a80;
 }
