@@ -19,12 +19,12 @@
         <li>Create an environment variable for Javafx runtime using terminal:
             <ul>
                 <li>a) for current session: execute <b>export PATH_TO_FX=[absolute path to its folder]/lib</b></li>
-                <li>b) permanently: edit /etc/.profile - paste the above command to the end of the file (the path must
+                <li>b) permanently: edit /etc/profile - paste the above command to the end of the file (the path must
                     be enclosed between double quotes), and restart the system.
                 </li>
             </ul>
         </li>
-        <li>Test the runtime by running an application using Javafx:
+        <li>Test the runtime by running an application which uses Javafx:
             <b>java -jar --module-path $PATH_TO_FX --add-modules javafx.controls some.jar</b>
         </li>
     </ul>
