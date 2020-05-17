@@ -15,7 +15,7 @@
     <p>This article instructs how to install JavaFX and run applications requiring it.</p>
     <h3>Linux</h3>
     <ul>
-        <li>Download SDK for linux from <a href="https://gluonhq.com/products/javafx/">Gluon</a>.</li>
+        <li>Download SDK for Linux from <a href="https://gluonhq.com/products/javafx/">Gluon</a>.</li>
         <li>Create an environment variable for Javafx runtime using terminal:
             <ul>
                 <li>a) for current session: execute <b>export PATH_TO_FX=[absolute path to its folder]/lib</b></li>
@@ -27,6 +27,15 @@
         </li>
         <li>Test the runtime by running an application which uses Javafx:
             <b>java -jar --module-path $PATH_TO_FX --add-modules javafx.controls some.jar</b>
+        </li>
+    </ul>
+
+    <h3>Windows 7</h3>
+    <ul>
+        <li>Download SDK for Windows.</li>
+        <li>Create a system environment variable named PATH_TO_FX with value <b>[absolute path to Javafx SDK]\lib</b></li>
+        <li>Test the runtime by executing command:
+            <b>java -jar --module-path %PATH_TO_FX% --add-modules javafx.controls some.jar</b>
         </li>
     </ul>
 </nav>
