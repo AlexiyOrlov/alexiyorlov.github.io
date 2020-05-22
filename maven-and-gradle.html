@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Maven and Gradle</title>
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="prism/prism-dark.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<script src="prism/prism-dark.js"></script>
+<nav>
+    <ul>
+        <li><a class="margined-link" href="index.html">Main page</a></li>
+    </ul>
+</nav>
+
+<p>In this article I will tell about my experiences with Gradle and Maven and why I started to prefer Maven over Gradle. I wasn't planning to compare these tools deliberately, but a recent
+situation caused me to do it and I felt like sharing my conclusions.</p>
+
+<h1>My initiation to Gradle</h1>
+<p>It is highly likely that you know the game Minecraft. I used to play that game a lot. I liked it so much that when I discovered that there are modding tools for it, I wanted to create my
+content for it. So I started learning. I had none experience in programming, except a couple of courses in my school. I started to learn Java, because Minecraft is written in it. It was very
+difficult for someone with zero experience in real world programming. Way back then (beta times) Minecraft modding tools used some Python scripts for building mods.
+    The main and most popular modding kit is called Forge. It was created by some developers to uniform the modding process. I was learning Java and Forge, and was working on my first mods
+    in parallel. After some time, I had managed to make and release some of them.</p>
+<p>This went for a while. And then the team behind Forge decided to choose Gradle as a build tool for the mods. This forced me to start learning it. Another painful process. After learning
+necessary things I was thankful at first for their decision. Yes, using a build tool is more convenient than setting up development environment and stuff manually and using an array of
+    scripts. But I didn't know about Maven then, and thus couldn't fairly judge this decision.</p>
+
+<h1>Working with Gradle</h1>
+<p>Gradle scripts are written in DSL, which extends from Groovy. Groovy is a dynamically typed JVM programming language. Although it seems attractive at first, code written in it can easily
+    become a complex and unmanageable mess, due to various features, syntactic sugar and language "improvements" that are piled up onto each other. No wonder it's not fully supported in
+    IDEs nowadays. And Gradle scripts were written exclusively in its DSL language at that time. I learned Groovy in the process, nevertheless, but that knowledge didn't benefit me much.
+    Probably, that's why Gradle authors implemented Kotlin scripts later.</p>
+<p>I invested a lot of time into reading Gradle documentation. And a lot of effort to apply gained knowledge to my programming work. I started writing usual applications with Gradle.
+I can say that Gradle authors seem to think it's fine to introduce new features and syntax in every version and deprecate previous ones. Their documentation is often lacking in certain
+    topics. Which must not be the case for a build tool used by thousands of developers. Let's examine the points of their comparison with Maven (on May of 2020):
+</p>
+
+<ol>
+    <li>Flexibility - here they say that Google chose Gradle for building Android apps. Android developers know that they must use an "Android Studio" IDE built on Intellij platform.
+    I have tried it, and I didn't like it. Mainly because Android development documentation is confusing and conflicting. I barely managed to write a simple image processing app before
+    giving up. Gradle contributes to confusion in this area. I'm not competent enough to judge Google's decision, but as a developer I can say that I won't attempt to write any apps for
+    Android anymore unless I'm forced to or they choose or invent something better than Gradle.</li>
+    <li>Performance - here they tell that Gradle works faster than Maven. While it may be true on benchmarks, consider the time which can be spent on learning Gradle versus learning Maven
+    and add it for comparison. I mean, Maven is faster and easier to learn than Gradle, so the total time spent on setting up successful build can be less with Maven. They also mention here
+        that Gradle keeps a daemon for speeding up the build, but that's an issue if you have limited memory on your computer.
+    </li>
+    <li>User experience - here they admit that IDE support is better for Maven. No wonder, because Maven's scripts are usual XML files, while Gradle uses that DSL invention. I wouldn't mind
+    it if they kept it consistent among versions instead of changing it every time.
+    </li>
+    <li>Dependency management - "Gradle provides customizable dependency selection and substitution rules", while Maven "allows one to override a dependency, but only by version". I bet
+        learning custom rules is another trial of digging their documentation.
+    </li>
+</ol>
+
+<p>And that's all. Not really attractive if you carefully analyze them.</p>
+
+<h1>Working with Maven</h1>
+<p>I finally decided to learn Maven while working on a serious Java project. I couldn't figure out how set up Gradle's tooling API and decided to drop it. I restarted the project, without any
+build tool and worked on it for some time. But working on it without a build tool was inconvenient when you switch computers or operating systems, so I decided to try Maven out. I used my IDE
+    to convert my generic project into a Maven one; then I found necessary documentation relatively quickly, and applied it to my project. I had to search some info in the internet, but it
+was also fast. Fortunately, Maven is conservative when it comes to features and build files - no breaking changes are expected in new versions. Your build script can expand, but you don't
+need to change what's already present. The script might be bigger than Gradle's, but you are prevented from turning it into a programmatic mess - just look at some big scripts of popular
+    Gradle projects. And it gets worse if the developers don't write comments on what parts of the script do what.
+</p>
+
+<h1>In conclusion</h1>
+<p>Gradle scripts allow arbitrary code, but it consequently can turn into a mess. They are partially solving this problem by implementing Kotlin scripts, but the fact that they can
+change their syntax in any version drives me away.</p>
+<p>Some people rightly point out that Gradle is consuming a lot of memory. That is expected from a Java application, though why Maven doesn't have this problem?</p>
+<p>Both tools have API for writing plugins. I haven't made any Maven plugins yet, but I made one for Gradle. I'll just say that they are difficult to set up, not even
+    talking about documentation.</p>
+<p>Both build tools have their areas of expertise. But in my case, I think I will continue to prefer Maven because of its consistency and being easier to learn than Gradle.</p>
+</body>
+</html>
