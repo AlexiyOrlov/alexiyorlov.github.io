@@ -32,7 +32,8 @@ necessary things I was thankful at first for their decision. Yes, using a build 
 <p>Gradle scripts are written in DSL, which extends from Groovy. Groovy is a dynamically typed JVM programming language. Although it seems attractive at first, code written in it can easily
     become a complex and unmanageable mess, due to various features, syntactic sugar and language "improvements" that are piled up onto each other. No wonder it's not fully supported in
     IDEs nowadays. And Gradle scripts were written exclusively in its DSL language at that time. I learned Groovy in the process, nevertheless, but that knowledge didn't benefit me much.
-    Probably, that's why Gradle authors implemented Kotlin scripts later.</p>
+    Probably, that's why Gradle authors implemented Kotlin scripts later.
+</p>
 <p>I invested a lot of time into reading Gradle documentation. And a lot of effort to apply gained knowledge to my programming work. I started writing usual applications with Gradle.
 I can say that Gradle authors seem to think it's fine to introduce new features and syntax in every version and deprecate previous ones. Their documentation is often lacking in certain
     topics. Which must not be the case for a build tool used by thousands of developers. Let's examine the points of their comparison with Maven (on May of 2020):
@@ -48,7 +49,7 @@ I can say that Gradle authors seem to think it's fine to introduce new features 
         that Gradle keeps a daemon for speeding up the build, but that's an issue if you have limited memory on your computer.
     </li>
     <li>User experience - here they admit that IDE support is better for Maven. No wonder, because Maven's scripts are usual XML files, while Gradle uses that DSL invention. I wouldn't mind
-    it if they kept it consistent among versions instead of changing it every time.
+    it if they kept it consistent among versions instead of changing it almost every time.
     </li>
     <li>Dependency management - "Gradle provides customizable dependency selection and substitution rules", while Maven "allows one to override a dependency, but only by version". I bet
         learning custom rules is another trial of digging their documentation.
