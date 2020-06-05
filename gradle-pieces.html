@@ -15,11 +15,11 @@
         <li><a class="margined-link" href="tutorials/java-plugins.html">Plugin system in Java</a></li>
     </ul>
 </nav>
-<h3>Some gradle snippets</h3>
+<h2>Some gradle snippets</h2>
 
 <DIV>
-    <H4> Building a jar that includes only parts of a project.</H4>
-    <p>Suppose you have a package "api" that you want to build separately:</p>
+    <H3> Building a jar that includes only parts of a project</H3>
+    <p>Suppose you have a package "api" that you want to build separately. You can define a following task:</p>
     <pre><code class="language-groovy">
     task apiJar(type: Jar, group: "build", description: 'Assembles the API') {
         setClassifier("api")
@@ -31,7 +31,7 @@
 </DIV>
 
 <DIV>
-    <H4>Publishing a package to Bintray.</H4>
+    <H3>Publishing a package to Bintray</H3>
     <p>For this you need to know your Bintray key, have a maven repository there, and know VCS URL of the project's code
         repository.
         The Bintray plugin reuses Maven publishing plugin, so you need it, too:</p>
@@ -101,7 +101,7 @@
 </DIV>
 
 <DIV>
-    <h4>Inheriting dependencies of an arbitrary project</h4>
+    <h3>Inheriting dependencies of an arbitrary project</h3>
     <p>Suppose we have a main project and 2 subprojects.</p>
     <pre><code>
             main-project
