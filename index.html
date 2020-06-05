@@ -19,128 +19,16 @@
         Google).</p>
     <nav>
         <ul>
-            <li><a class="margined-link" href="tutorials/change-java-path.html">Changing Java path</a> </li>
+            <li><a class="margined-link" href="tutorials/change-java-path.html">Changing Java path</a></li>
             <li><a class="margined-link" href="tutorials/install-javafx.html">Installing JavaFX</a></li>
             <li><a class="margined-link" href="tutorials/java-plugins.html">Plugin system in Java</a></li>
             <li><a class="margined-link" href="tutorials/netty.html">Simple Netty server</a></li>
-            <li><a class="margined-link" href="tutorials/netty-client.html">Simple Netty client</a> </li>
-            <li><a href="maven-and-gradle.html">Maven and Gradle</a> </li>
-<!--            <LI><a class="margined-link" href="gradle-pieces.html">Gradle "cheat-sheet"</a> </LI>-->
+            <li><a class="margined-link" href="tutorials/netty-client.html">Simple Netty client</a></li>
+            <li><a class="margined-link" href="maven-and-gradle.html">Maven and Gradle</a></li>
+            <LI><a class="margined-link" href="gradle-pieces.html">Gradle "cheat-sheet"</a></LI>
         </ul>
     </nav>
-    <h3>Some gradle snippets</h3>
 
-    <DIV>
-        <H4> Building a jar that includes only parts of a project.</H4>
-        <p>Suppose I have a package "api" that I want to build separate:</p>
-        <pre><code class="language-groovy">
-    task apiJar(type: Jar, group: "build", description: 'Assembles the API') {
-        setClassifier("api")
-        from sourceSets.main.allSource
-        from sourceSets.main.output
-        include 'alexiy/bla/bla/bla/api/**'
-    }
-        </code></pre>
-    </DIV>
-
-    <DIV>
-        <H4>Publishing a package to Bintray.</H4>
-        <p>For this I need to know my Bintray key; have a maven repository there; VCS URL to the project's code repository.
-            The Bintray plugin reuses Maven publishing plugin, so I need it, too:</p>
-        <pre><code class="language-groovy">
-    plugins {
-        id 'maven-publish'
-        id "com.jfrog.bintray" version "1.8.4"
-    }
-        </code></pre>
-        <p>I must set project version and maven group - setVersion(), setGroup(). Then I must configure a maven publications:</p>
-        <pre><code class="language-groovy">
-    publishing {
-        publications {
-            //"projectName" is arbitrary, used to reference the publication in the script
-            projectName(MavenPublication) {
-                //this is the artifact ID. Defaults to archive base name if not set
-                artifactId 'some-artifact'
-                // add all jars to be included for publishing
-                artifact(jar) {
-                    builtBy remapJar
-                }
-                artifact(sourcesJar) {
-                    builtBy remapSourcesJar
-                }
-                artifact apiJar
-                artifact makeApiSource
-            }
-        }
-    }
-            </code></pre>
-        <p>Next, I must define a repository to publish to:</p>
-        <pre><code class="language-groovy">
-    repositories {
-        maven{
-            setUrl('https://dl.bintray.com/alexiy/maven-repository')
-        }
-    }
-            </code></pre>
-        <p>Then I need to configure the 'bintray' task. The properties "user" and "key" must be set outside the project if you are not working on this project alone.
-            Store them in a simple text file (ignored by Git) and read them when needed:</p>
-        <pre><code class="language-groovy">
-    bintray{
-        File credentials=new File('bintrayid.txt')
-        if(credentials.exists())
-        {
-            def lines=credentials.readLines()
-            user=lines.get(0)
-            key=lines.get(1)
-        }
-        pkg{
-            //set to true to simulate the publishing, without uploading
-            dryRun=false
-            //select the repository to target
-            repo='maven-repository'
-            //package name
-            name='some-package'
-            licenses=['gpl-3.0']
-            //url to code repository
-            vcsUrl='https://github.com/AlexiyOrlov/project-source'
-            //select publications to upload, which you defined in "publishing" configuration
-            publications=['projectName']
-        }
-    }
-        </code></pre>
-    </DIV>
-
-    <DIV>
-        <h4>Inheriting dependencies of an arbitrary project</h4>
-        <p>Let's suppose we have a main project and 2 subprojects.</p>
-        <pre><code>
-            main-project
-            |--subproject-alpha
-            |--subproject-beta
-        </code></pre>
-        <P>Main project contains dependencies that we want to use in both subprojects, and we also want to use main project's code. We can achieve that without using plugins by adding following code to
-            the subprojects' build scripts:
-        </P>
-        <pre><code class="language-groovy">
-    dependencies {
-            //depend on the root project
-        implementation project(':')
-            //depend on all of the root project's dependencies
-        rootProject.configurations.each {configuration->
-            configuration.dependencies.each {dependency->
-                dependencies.add(configuration.name,dependency)
-            }
-        }
-    }
-        </code> </pre>
-        <p>We can also add dependencies of specific configurations only. Here is how to add dependencies of test configurations:</p>
-        <pre><code class="language-groovy">
-    rootProject.configurations.testImplementation.dependencies.each {dep->
-        dependencies.add('testImplementation',dep)
-    }
-        </code> </pre>
-        As you can see, we're achieving this mostly by using Groovy code rather than Gradle utilities.
-    </DIV>
     <h4>(Website is under construction)</h4>
     <h4>All rights reserved, 2020</h4>
     </body>
