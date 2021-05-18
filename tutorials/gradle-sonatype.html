@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Publishing artifacts to Sonatype (Maven Central) using Gradle</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../prism/prism-dark.css">
+    <link rel="stylesheet" href="../main.css">
+</head>
+<body>
+<h1>Intro</h1>
+<p>Publishing to Maven Central for first time can be a challenging task, especially using Gradle. I prepared this
+    tutorial shortly after successful publication of my second library; this tutorial assumes you already have an
+    account at Jira, so I'll be focusing on the actual publishing steps.
+</p>
+<h2>Process</h2>
+<p>I searched and skimmed over several tutorials and examples on publishing with Gradle, but they differ and some
+    are outdated, so in the end I spent almost a day figuring it out.</p>
+<p>First of all you will need to create or reuse GPG keys. I've done this on Linux, and I had to install 'gnupg2'
+    key tool first. Other tutorials cover the creation and upload of keys sufficiently, so I will tell you what you
+    need to do with the keys in Gradle context. You need to export your generated key to a file using this command:
+<pre><code class="language-bash">gpg2 --export-secret-keys AABBCCDD > AABBCCDD.gpg</code> </pre>
+where AABBCCDD are last 8 numbers of the key id. Store this key file in a safe location.
+<p>After that create a file 'gradle.properties' in the '.gradle' directory. This file is where your confidential
+    info will go into.</p>
+<p>Now let's look at a sample gradle script:</p>
+<pre><code class="language-groovy">
+plugins {
+    id 'java-library'
+    // these 4 plugins are necessary
+    id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
+    id 'maven-publish'
+    id 'maven'
+    id 'signing'
+}
+
+group ='your.group'
+archivesBaseName = 'archive name'
+version("0.1.0")
+
+sourceCompatibility=JavaVersion.VERSION_11
+targetCompatibility=JavaVersion.VERSION_11
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    //your dependencies
+}
+
+task('sourceJar', type: Jar){
+    classifier('sources')
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar) {
+    classifier('javadoc')
+    from javadoc
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+publishing {
+    publications{
+        javaPubl(MavenPublication){
+            from components.java
+            artifact sourceJar
+            artifact javadocJar
+            artifactId 'your-artifact-id'
+            //POM configuration
+            pom {
+                name= "First name Last name"
+                description="..."
+                url = "project URL"
+                licenses{
+                    license{
+                        name ="name of the license"
+                        url="...and its URL"
+                    }
+                }
+                developers{
+                    developer{
+                        name="First name Last Name"
+                        email="your email"
+                    }
+                }
+                //"Source Control Management"
+                scm{
+                    //'git' for Git, 'svn' for Subversion, and so on...
+                    connection ="scm:git:[http link to repository]"
+                    developerConnection ="scm:git:[https link to the repository]"
+                    url= "arbitrary link to the repository"
+                }
+            }
+        }
+    }
+}
+
+signing {
+    // 'javaPubl' is the name of the publication above
+    sign publishing.publications.javaPubl
+}
+
+
+nexusPublishing {
+    repositories {
+        sonatype{
+            //assigning from the 'gradle.properties' files
+            username=project.property("user")
+            password=project.property("password")
+        }
+    }
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            //assigning from the file as well
+            repository(
+                    url: "${nexusUrl}/content/repositories/releases") {
+                authentication(userName: "$user", password: "$password")
+            }
+            snapshotRepository(
+                    url: "${nexusUrl}/content/repositories/snapshots") {
+                authentication(userName: "$user", password: "$password")
+            }
+        }
+    }
+}
+</code> </pre>
+<p>
+    This is a minimal required script. The properties 'user', 'password', 'nexusUrl' are stored in
+    'gradle.properties', as well as signing details like so:
+</p>
+<pre><code class="language-txt">
+        user=your Sonatype username
+        password=your Sonatype password
+
+        signing.keyId=AABBCCDD (last 8 digits)
+        signing.password=key passphrase
+        signing.secretKeyRingFile=/location/of/the/key/file.gpg
+        nexusUrl=https://oss.sonatype.org (as of 2021)
+        </code></pre>
+<p>When the properties are filled out, and your project is ready, you must execute command</p>
+<pre><code class="language-bash">./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
+</code> </pre>
+<p>If the deployment fails, you can view why at the Nexus Repository Manager. Otherwise, deployment will end with
+    success.</p>
+</body>
+<script src="../prism/prism-dark.js"></script>
+</html>
