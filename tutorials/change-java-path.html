@@ -14,6 +14,21 @@
         </ul>
     </nav>
     <p>This short article shows how to change used Java installation on a Windows system.</p>
+    <h3>On Windows 10</h3>
+    <ul>
+        <li>
+            Use the search bar for "environment variables" and choose the result with system variables. It will open 'System Properties' dialog at the 'Advanced' tab.
+            Press 'Environment variables' button.
+        </li>
+        <li>
+            Check for 'JAVA_HOME' variable existence in the list. If it doesn't exist, then create it and paste the path to desired Java
+            installation, otherwise edit it and paste a different path. It can look like "C:\Users\alexi\.jdks\corretto-16.0.2".
+        </li>
+        <li>
+            Press OKs. Open command prompt or Powershell and check the Java version by running "java -version".
+        </li>
+    </ul>
+
     <h3>On Windows 7</h3>
     <ul>
         <li>
