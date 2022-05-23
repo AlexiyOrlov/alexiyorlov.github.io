@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>K-Turrets - mod overview</title>
+    <link rel="stylesheet" href="../main.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <nav>
+        <ul>
+            <li><a class="margined-link" href="../index.html">Main page</a></li>
+        </ul>
+    </nav>
+    <h2>K-Turrets overview</h2>
+    <p>K-Turrets is a Minecraft mod which adds several turrets and combat drones. Turrets protect areas from hostile mobs. Drones work similarly
+    to turrets, but are mobile and have lower stats. I will refer to drone or turret as 'unit' if the contextual information applies to both object
+    types during
+     the overview.
+  </p>
+  <p>A unit can be obtained by crafting its respective spawn egg. Drone egg recipes have following pattern - 4 steel ingots, 2 feathers,
+     a dispenser, and type-specific ingredient on sides:</p>
+  <img src="drone_recipes.png">
+  <p>Turret egg recipes have steel ingots instead of feathers.</p>
+  <p>You can configure a unit via a UI which is accessed via Shift + right click on the unit.</p>
+  <img src="options-ui.png">
+  <p>On the left side there is a list of applicable targets, represented by a toggle button with the entity's registry name. On the right side
+  there are several controls, integrity (health) indicator and a couple of hints. To remove a target, press on it - it will appear crossed out. Once you removed desired
+targets, close the screen to apply the changes. To add a target, use the text field on top - write full registry name and then press 'Add...'
+button. Pressing 'Dismantle' will eject unit's inventory and drop the unit in item form (its state will be saved). There is another button that
+toggles unit's pushability, and another button which controls whether a unit will attack players who not allied to you. "Claim" button will make
+a unit yours.</p>
+<p>Another button will show up in drone UI which controls whether a drone is following its owner or is idle.</p>
+<p>Dismantling a unit will produce a spawn egg with that unit's data written on it; you can see unit's UUID in the tooltip. Using such spawn egg
+will place that unit and load its data.</p>
+<p>If a unit is damaged, you can repair it with a steel ingot by Shift + right clicking it. Drone recovers 1/4 of integrity from 1 ingot,
+   and turret recovers 1/6 of integrity.</p>
+   <p>By default unit's targets are all potentially hostile mobs. If you want it to shoot players that are not allied to you, you must add
+   "minecraft:player" to targets and toggle the mentioned control button.</p>
+   <p>To access unit's inventory, right click it. There you can load it with appropriate ammo.</p>
+
+   <h3>Behavior</h3>
+   <p>Turret: if it has ammo (and weapon if it's an Arrow turret), it will shoot at its targets within range.</p>
+   <p>Turret can be put into a minecart.</p>
+   <p>Drone: same as turret, but will pursue the target. If is set to follow the owner, will fly towards his head.</p>
+   <p>Drones have less slots for ammo.</p>
+
+   <h3>Configuration</h3>
+   <p>Each turret type's stats can be configured separately, such as health, range, armor, fire rate, damage. By default, their stats are identical
+   except damage; turrets ranked by damage, from lowest: cobble, firecharge, arrow, bullet, brick, gauss. </p>
+   <p>Drones' stats are derived from appropriate turrets' stats like this:</p>
+   <p>Health = Turret Health - 15</p>
+   <p>Range = Turret Range - 5</p>
+   <p>Armor = Turret Armor - 2</p>
+   <p>Other stats are identical.</p>
+   <p>You can turn on drone ventilator sound in the client config.</p>
+
+   <h3>Types</h3>
+   <p>There are following types of units:</p>
+   <ol>
+      <li>Arrow: can use all kinds of arrows as ammo, and needs bow or crossbow to shoot. Flame, Punch, Power enchantments are applicable by arrow units.</li>
+      <img src="arrow-drone.png"><img src="arrow-turret.png">
+      <li>Bullet: can use gold and iron nuggets as ammo.</li>
+      <img src="bullet-drone.png"><img src="bullet-turret.png">
+      <li>Brick: can use bricks and nether bricks as ammo.</li>
+      <img src="brick-drone.png"><img src="brick-turret.png">
+      <li>Cobble: can use all items under tag "stone tool materials" as ammo.</li>
+      <img src="cobble-drone.png"><img src="cobble-turret.png">
+      <li>Firecharge: uses fire charges as ammo; immune to fire.</li>
+      <img src="firecharge-drone.png"><img src="firecharge-turret.png">
+      <li>Gauss: uses gauss bullets as ammo.</li>
+      <img src="gauss-drone.png"><img src="gauss-turret.png">
+
+   </ol>
+  </body>
+</html>
