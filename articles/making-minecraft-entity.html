@@ -1,0 +1,36 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Creating an entity in Minecraft</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../prism/prism-dark.css">
+    <link rel="stylesheet" href="../main.css">
+</head>
+
+<body>
+    <nav>
+        <ul>
+            <li><a class="margined-link" href="../index.html">Main page</a></li>
+        </ul>
+    </nav>
+    <h3>Forge version</h3>
+    <p>The process or flow is following:</p>
+    <h4>For Minecraft 1.18:</h4>
+        <ol>
+            <li>Create your entity subclass.</li>
+            <li>Use a deferred registry to register a new appropriate entity type. You will have to create and use a casting method to satisfy
+                the bounds of generics there. Specify its size, 1.0 is 1 block dimension. If the entity is mobile, make sure to size it smaller than
+                whole numbers, e.g. use 3.9 instead of 4.0. Otherwise the entity will keep getting stuck on blocks while moving.
+            </li>
+            <li>Register attributes using EntityAttributeCreationEvent.</li>
+            <li>Register a spawner item for the entity in your item registry of class ForgeSpawnEggItem.</li>
+            <li>Make an item model appropriate to the spawn egg, it should contain just string '"parent": "minecraft:item/template_spawn_egg"'.</li>
+            <li>Design a model (preferably in BlockBench), texture it, then save everything and export.</li>
+            <li>Put the model into your project, generate necessary imports, setup animations.</li>
+            <li>In your client setup handler, register model layer definitions using EntityRenderersEvent.RegisterLayerDefinitions.</li>
+            <li>There as well, register a renderer via EntityRenderersEvent.RegisterRenderers.</li>
+            <li>Put the texture into your project.</li>
+            <li>Make appropriate entries in language files.</li>
+            <li>Test the entity and fix mistakes until it's done.</li>
+        </ol>
+</body>
