@@ -15,23 +15,25 @@
     <h2>K-Turrets overview</h2>
     <p>K-Turrets is a Minecraft mod which adds several turrets and combat drones. Turrets protect areas from hostile mobs. Drones work similarly
     to turrets, but are mobile and have lower stats. I will refer to drone or turret as 'unit' if the contextual information applies to both object
-    types during
-     the overview.
+    types during the overview.
   </p>
-  <p>A unit can be obtained by crafting its respective spawn egg. Drone egg recipes have following pattern - 4 steel ingots, 2 feathers,
+  <p>A unit can be obtained by crafting its respective placer. Drone placer recipes have following pattern - 4 steel ingots, 2 feathers,
      a dispenser, and type-specific ingredient on sides:</p>
   <img src="drone_recipes.png">
-  <p>Turret egg recipes have steel ingots instead of feathers.</p>
+  <p>Turret placer recipes have steel ingots instead of feathers.</p>
   <p>You can configure a unit via a UI which is accessed via Shift + right click on the unit.</p>
   <img src="options-ui.png">
   <p>On the left side there is a list of applicable targets, represented by a toggle button with the entity's registry name. On the right side
   there are several controls, integrity (health) indicator and a couple of hints. To remove a target, press on it - it will appear crossed out.
   Once you removed desired targets, close the screen to apply the changes. To add a target, use the text field on top - write full registry name
-  and then press 'Add...'button. Pressing 'Dismantle' will eject unit's inventory and drop the unit in item form (its state will be saved). There is
-  another button thattoggles unit's pushability, and another button which controls whether a unit will attack players who not allied to you.
+  and then press 'Add...'button.</p>
+  <p>You can exclude players from targets using the same text field by typing in a player's name prefixed by '!'. Excluded players will appear
+     at the top of the target list.</p>
+     <p> Pressing 'Dismantle' will eject unit's inventory and drop the unit in item form (its state will be saved). There is
+  another button that toggles unit's pushability, and another button which controls whether a unit will attack players who are not allied to you.
    "Claim" button will make a unit yours.</p>
 <p>Another button will show up in drone UI which controls whether a drone is following its owner or is idle.</p>
-<p>Dismantling a unit will produce a spawn egg with that has unit's data written on it; you can see unit's UUID in the tooltip. Using such spawn egg
+<p>Dismantling a unit will produce a placer that has unit's data written on it; you can see unit's UUID in the tooltip. Using such placer
 will place that unit and load its data.</p>
 <p>If a unit is damaged, you can repair it with a steel ingot by Shift + right clicking it. Drone recovers 1/4 of integrity from 1 ingot,
    and turret recovers 1/6 of integrity.</p>
@@ -45,6 +47,7 @@ will place that unit and load its data.</p>
    <p>Drone: same as turret, but will pursue the target. If is set to follow the owner, will fly towards his head. When attacking a mob,
        a drone will move sideways and move back if an attacking mob is too close.</p>
    <p>Drones have less slots for ammo.</p>
+   <p>Turrets/drones won't hurt friendly mobds unless they are in the target list.</p>
 
    <h3>Configuration</h3>
    <p>Each turret type's stats can be configured separately, such as health, range, armor, fire rate, damage. By default, their stats are identical
@@ -82,7 +85,7 @@ will place that unit and load its data.</p>
 
    <h3>Tricks and non-obvious info</h3>
    <ol>
-      <li>Place your turrets on an elevated platforms, so it is harder for melee mobs to reach them.</li>
+      <li>Place your turrets on an elevated blocks, so it is harder for melee mobs to reach them.</li>
       <li>Units are immune to poison, wither, hunger, health, health boost and regeneration effects. Others are applicable.</li>
       <li>You can create patrols from turrets in moving minecarts.</li>
       <li>Vanilla team system is accounted by unit targeting.</li>
