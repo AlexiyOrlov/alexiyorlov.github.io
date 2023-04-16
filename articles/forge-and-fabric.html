@@ -1,0 +1,60 @@
+<html lang="en">
+<head>
+    <title>Comparison of Forge and Fabric</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../prism/prism-dark.css">
+    <link rel="stylesheet" href="../main.css">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a class="margined-link" href="../index.html">Main page</a></li>
+        </ul>
+    </nav>
+    <h1>Forge and Fabric mod loaders</h1>
+    <p>
+        Forge has been the main choice of people who create mods for Minecraft for a long time. In 2018, a new mod loader and API named Fabric was
+        created. Since then, these two mod loaders have been compared to each other in terms of features. In this article, I will explain how
+        they differ.
+    </p>
+    <h2>Forge</h2>
+    <p>Forge was created in 2011. It solved the problem of mod inter-compatibility, meaning that mod authors could write code in a way that would
+    not conflict with other mods's code. Forge has become a feature-rich API.</p>
+    <h2>Fabric</h2>
+    <p>Fabric's design differs from Forge. It is modular and is able to target Minecraft snapshots, allowing it to update faster. Its API is not
+    as rich as Forge's, instead it relies on Mixins to provide modders with ability to implement desired features.</p>
+    <h2>Comparison</h2>
+    <ul>
+        <li>
+            Forge has more features out of the box than Fabric.
+        </li>
+        <li>
+            Depening on your mod loadout, Fabric can be lighter than Forge.
+        </li>
+        <li>
+            Forge used to lack Mixin subsystem, but recently it included it,
+             so Fabric has no advantage here anymore.
+        </li>
+        <li>
+            For gaining access to protected, private and package-private Java fields and methods, Forge uses access transformer system.
+            Fabric uses access widener system, which, in my experience, works faster.
+        </li>
+        <li>
+            Fabric requires you to manually run Minecraft source code generation task and the generated source code contains some compilation
+             errors, while Forge provides source code out of the box without errors.
+        </li>
+        <li>Forge can generate correct run configurations for IDEs, while Fabric sometimes has problems with it. It is more reliable to run
+            Fabric projects via Gradle task.
+        </li>
+    </ul>
+    <h2>Summary</h2>
+    <p>
+        There exist Fabric-exclusive and Forge-exclusive mods, but many mods exist on both loaders. Ability to develop mods on both loaders
+        usually depends on authors' amount of free time or limitations of the API.
+    </p>
+    <h3>My preference</h3>
+    <p>I as a modder prefer Forge over Fabric, because Forge provides more features and is very versatile. But I do have mods that exist on both
+        loaders for player convenience. Also my computer is not low-end.
+    </p>
+</body>
