@@ -30,16 +30,8 @@
 </DIV>
 
 <DIV>
-    <H3>Publishing a package to Bintray</H3>
-    <p>For this you need to know your Bintray key, have a maven repository there, and know VCS URL of the project's code
-        repository.
-        The Bintray plugin reuses Maven publishing plugin, so you need it, too:</p>
-    <pre><code class="language-groovy">
-    plugins {
-        id 'maven-publish'
-        id "com.jfrog.bintray" version "1.8.4"
-    }
-        </code></pre>
+    <H3>Publication configuration</H3>
+
     <p>You must set the project version and maven group - setVersion(), setGroup(). Then you must configure maven
         publications:</p>
     <pre><code class="language-groovy">
@@ -61,42 +53,8 @@
             }
         }
     }
-            </code></pre>
-    <p>Next, you must define a repository to publish to:</p>
-    <pre><code class="language-groovy">
-    repositories {
-        maven{
-            setUrl('https://dl.bintray.com/alexiy/maven-repository')
-        }
-    }
-            </code></pre>
-    <p>Then you need to configure the 'bintray' task. The properties "user" and "key" must be set outside the project if
-        you are not working on this project alone.
-        Store them in a simple text file (ignored by Git) and read them when needed:</p>
-    <pre><code class="language-groovy">
-    bintray{
-        File credentials=new File('bintrayid.txt')
-        if(credentials.exists())
-        {
-            def lines=credentials.readLines()
-            user=lines.get(0)
-            key=lines.get(1)
-        }
-        pkg{
-            //set to true to simulate the publishing, without uploading
-            dryRun=false
-            //select the target repository
-            repo='maven-repository'
-            //specify a package name
-            name='some-package'
-            licenses=['gpl-3.0']
-            //url to the code repository
-            vcsUrl='https://github.com/AlexiyOrlov/project-source'
-            //select publications to upload, which you defined in "publishing" configuration
-            publications=['projectName']
-        }
-    }
-        </code></pre>
+    </code></pre>
+
 </DIV>
 
 <DIV>
