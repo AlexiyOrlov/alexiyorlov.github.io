@@ -14,17 +14,17 @@
     </nav>
     <h2>K-Turrets overview</h2>
     <p>K-Turrets is a Minecraft mod which adds several turrets and combat drones. Turrets protect areas from hostile mobs. Drones work similarly
-    to turrets, but are mobile and have lower stats. I will refer to drone or turret as 'unit' if the contextual information applies to both object
+    to turrets, but are mobile and have lower stats. I will refer to drone or turret as 't/d' if the contextual information applies to both object
     types during the overview.
   </p>
-  <p>A unit can be obtained by crafting its respective item. First you must obtain titanium ingots, which are smelted from raw titanium,
+  <p>T/d can be obtained by crafting its respective item. First you must obtain titanium ingots, which are smelted from raw titanium,
      which drops from titanium ore generating in the Overworld.</p>
      <p> Turret recipes have following pattern - 6 titanium ingots, a dispenser,
         and type-specific ingredient on sides:</p>
   <img src="turret-recipes.png">
   <p>Drone recipes have following pattern - 4 titanium ingots, 2 feathers, a dispenser and type-specific ingredient on sides:</p>
   <img src="drone-recipes.png">
-  <p>You can configure a unit via a UI which is accessed by Shift + right click on the unit.</p>
+  <p>You can configure t/d via a UI which is accessed by Shift + right click on the t/d.</p>
   <img src="unit-ui.png">
   <p>On the left side there is a list of applicable targets, represented by a toggle button with the entity's registry name. On the right side
   there are several controls, integrity (health) indicator and a couple of hints. To remove a target, press on it - it will appear crossed out.
@@ -33,18 +33,18 @@
 the text field.</p>
   <p>You can exclude players from targets using the same text field by typing in a player's name prefixed by '!'. Excluded players will appear
      at the top of the target list.</p>
-     <p> Pressing 'Dismantle' will eject unit's inventory and drop the unit in item form (its state will be saved). There is
-  another button that toggles unit's pushability, and another button which controls whether a unit will attack players who are not allied to you.
-   "Claim" button will make a unit yours.</p>
+     <p> Pressing 'Dismantle' will eject t/d's inventory and drop the t/d in item form (its state will be saved). There is
+  another button that toggles t/d's pushability, and another button which controls whether a t/d will attack players who are not allied to you.
+   "Claim" button will make a t/d yours.</p>
 <p>Another button will show up in drone UI which controls whether a drone is following its owner or not.</p>
-<p>Dismantling a unit will produce an item that has unit's data written on it; you can see unit's UUID in the tooltip. Using such item
-will place that unit and load its data.</p>
-<p>If a unit is damaged, you can repair it with a titanium ingot by Shift + right clicking it. Drone recovers 1/4 of integrity from 1 ingot,
+<p>Dismantling a t/d will produce an item that has t/d's data written on it; you can see t/d's UUID in the tooltip. Using such item
+will place that t/d and load its data.</p>
+<p>If t/d is damaged, you can repair it with a titanium ingot by Shift + right clicking it. Drone recovers 1/4 of integrity from 1 ingot,
    and turret recovers 1/6 of integrity.</p>
-   <p>By default unit's targets are all potentially hostile mobs. If you want it to shoot players that are not allied to you, you must add
+   <p>By default t/d's targets are all potentially hostile mobs. If you want it to shoot players that are not allied to you, you must add
    "minecraft:player" to targets and toggle the mentioned control button.</p>
 
-   <p>To access unit's inventory, right click it. There you can load it with appropriate ammo.</p>
+   <p>To access t/d's inventory, right click it. There you can load it with appropriate ammo.</p>
 
    <h3>Behavior</h3>
    <p>Turret: if it has ammo (and weapon if it's an Arrow turret), it will shoot at its targets within range.</p>
@@ -63,18 +63,18 @@ will place that unit and load its data.</p>
    <p>Range = 32</p>
    <p>Fire rate = 20</p>
    <p>Drones' stats are derived from appropriate turrets' stats like this:</p>
-   <p>Health = Turret Health - 15</p>
+   <p>Health = Turret Health * 85%</p>
    <p>Range = Turret Range - 5</p>
-   <p>Armor = Turret Armor - 2</p>
+   <p>Armor = Turret Armor * 34%</p>
    <p>Other stats are identical.</p>
    <p>You can turn on drone propeller sound in the client config.</p>
    <p>In the server config (which can be found in "world/serverconfig" directory) there are defined limits of drone and turret count per player.
        A player will not be able to place new drones or turrets if he reaches the limits. Default values are 30 for drones and 50 for turrets.
     </p>
    <h3>Types</h3>
-   <p>There are following types of units:</p>
+   <p>There are following types of t/ds:</p>
    <ol>
-      <li>Arrow: can use all kinds of arrows as ammo, and needs bow or crossbow to shoot. Flame, Punch, Power enchantments are applicable by arrow units.</li>
+      <li>Arrow: can use all kinds of arrows as ammo, and needs bow or crossbow to shoot. Flame, Punch, Power enchantments are applicable by arrow t/ds.</li>
       <img src="arrow-drone.png"><img src="arrow-turret.png">
       <li>Bullet: can use gold and iron nuggets as ammo.</li>
       <img src="bullet-drone.png"><img src="bullet-turret.png">
@@ -91,10 +91,10 @@ will place that unit and load its data.</p>
    <h3>Tricks and non-obvious info</h3>
    <ol>
       <li>Place your turrets on an elevated blocks, so it is harder for melee mobs to reach them.</li>
-      <li>Units are immune to poison, wither, hunger, health, health boost and regeneration effects. Others are applicable.</li>
+      <li>T/ds are immune to poison, wither, hunger, health, health boost and regeneration effects. Others are applicable.</li>
       <li>You can create patrols from turrets in moving minecarts.</li>
-      <li>Vanilla team system is accounted by unit targeting.</li>
-      <li>Units can't drown.</li>
+      <li>Vanilla team system is accounted by t/d targeting.</li>
+      <li>T/ds can't drown.</li>
    </ol>
   </body>
 </html>
