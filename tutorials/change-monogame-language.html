@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>How to change Monogame game language</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../prism/prism-dark.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<script src="../prism/prism-dark.js"></script>
+<nav>
+  <ul>
+    <li><a class="margined-link" href="../index.html">Main page</a></li>
+  </ul>
+</nav>
+<h1>How to change Monogame game language</h1>
+<p>You can change the language by changing current C# culture:</p>
+<pre><code class="language-csharp">
+  using System.Threading;
+
+  public class Game1 : Game
+  {
+    public Game1()
+    {
+      Thread.CurrentThread.CurrentUICulture=new System.Globalization.CultureInfo("ru-RU");
+    }
+  }
+</code></pre>
+</body>
+</html>
