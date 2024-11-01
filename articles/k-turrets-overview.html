@@ -90,7 +90,20 @@ will place that t/d and load its data.</p>
    <p>Range = Turret Range - 5</p>
    <p>Armor = Turret Armor * 34%</p>
    <p>Other stats are identical, though their inventory has 1 row of slots less.</p>
-    <p>If you need, you can change ammo items used.</p>
+    <p>If you need, you can change ammo items by making a datapack with ammo item tags. Datapack layout:
+        <pre>
+            -data
+                -k_turrets
+                    -tags
+                        -items
+                            arrow_unit_ammo.json
+                            bullet_unit_ammo.json
+                            brick_unit_ammo.json
+                            cobble_unit_ammo.json
+                            fireball_unit_ammo.json
+                            gauss_unit_ammo.json
+        </pre>
+    </p>
    <p>You can turn on drone propeller sound in the client config.</p>
    <p>You can define what mobs will be excluded from default targets in the config.</p>
    <p>You can configure amount of titanium ore generated in 1.16.5-1.19.2 versions of the mod. Versions 1.20.1 and up require a datapack.</p>
