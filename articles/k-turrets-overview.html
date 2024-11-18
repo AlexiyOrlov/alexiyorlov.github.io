@@ -13,11 +13,11 @@
         </ul>
     </nav>
     <h2>K-Turrets overview</h2>
-    <p>K-Turrets is a Minecraft mod which adds several turrets and combat drones. Turrets protect areas from hostile mobs. Drones work similarly
-    to turrets, but are mobile and have lower stats. I will refer to drone or turret as 't/d' if the contextual information applies to both object
+    <p>K-Turrets is a Minecraft mod which adds 6 turrets and combat drones. Turrets protect areas from hostile mobs. Drones work similarly
+    to turrets, but are mobile and have lower stats. I will refer to drone or turret as 'unit' if the contextual information applies to both object
     types during the overview.
   </p>
-  <p>T/d can be obtained by crafting its respective item. First you must obtain titanium ingots, which are smelted from raw titanium in the blast furnace,
+  <p>Unit can be obtained by crafting its respective item. First you must obtain titanium ingots, which are smelted from raw titanium in the blast furnace,
      which drops from titanium ore generating in the Overworld.</p>
      <p> Turret recipes have following pattern - 6 titanium ingots, a dispenser,
         and type-specific ingredient on sides:</p>
@@ -25,7 +25,7 @@
   <p>Drone recipes have following pattern - 4 titanium ingots, 2 feathers, a dispenser and type-specific ingredient on sides:</p>
   <img src="images/arrow-drone-recipe.png">
   <img src="images/fireball-drone-recipe.png" alt="">
-  <p>You can configure t/d via a UI which is accessed by Shift + right click on the t/d.</p>
+  <p>You can configure unit via a uI which is accessed by Shift + right click on the unit.</p>
   <img src="images/configuration-ui.png">
   <p>On the left side there is a list of applicable targets, represented by a toggle button with the entity's registry name. On the right side
   there are several controls, integrity (health) indicator and a couple of hints. To remove a target, press on it - it will appear crossed out.
@@ -34,19 +34,19 @@
 the text field.</p>
   <p>You can exclude players from targets using the same text field by typing in a player's name prefixed by '!'. Excluded players will appear
      at the top of the target list.</p>
-     <p> Pressing 'Dismantle' will drop the t/d in item form (its state and ammo will be saved). There is
-  another button that toggles t/d's pushability, and another button which controls whether a t/d will attack players who are not allied to you.
-   "Claim" button will make a t/d yours.</p>
-<p>Another button will show up in drone UI which controls whether a drone is following its owner, staying or guarding.</p>
-<p>Dismantling a t/d will produce an item that has t/d's data written on it; you can see t/d's UUID in the tooltip. Using such item
-will place that t/d and load its data.</p>
-<p>If t/d is damaged, you can repair it with a titanium ingot by Shift + right clicking it. Drone recovers 1/4 of integrity from 1 ingot,
+     <p> Pressing 'Dismantle' will drop the unit in item form (its state and ammo will be saved). There is
+  another button that toggles unit's pushability, and another button which controls whether a unit will attack players who are not allied to you.
+   "Claim" button will make a unit yours.</p>
+<p>Another button will show up in drone uI which controls whether a drone is following its owner, staying or guarding.</p>
+<p>Dismantling a unit will produce an item that has unit's data written on it; you can see unit's uuID in the tooltip. using such item
+will place that unit and load its data.</p>
+<p>If unit is damaged, you can repair it with a titanium ingot by Shift + right clicking it. Drone recovers 1/4 of integrity from 1 ingot,
    and turret recovers 1/6 of integrity.</p>
-   <p>By default t/d's targets are all potentially hostile mobs. If you want it to shoot players that are not allied to you, you must
+   <p>By default unit's targets are all potentially hostile mobs. If you want it to shoot players that are not allied to you, you must
        toggle the mentioned control button.</p>
 
-   <p>To access t/d's inventory, right click it. There you can load it with appropriate ammo.</p>
-   <p>Hoppers can insert ammo into t/ds.</p>
+   <p>To access unit's inventory, right click it. There you can load it with appropriate ammo.</p>
+   <p>Hoppers can insert ammo into units.</p>
    <p>You can hold 'K' key to highlight locations of your drones in 128 block range around you (even through blocks):</p>
    <img src="images/drone-location-highlight.png" alt="">
 
@@ -56,13 +56,13 @@ will place that t/d and load its data.</p>
    <p>Drone: same as turret, but will pursue the target. If is set to follow the owner, will fly towards his body. When attacking a mob,
        a drone will move sideways and move back if an attacking mob is too close.</p>
    <p>Drones have less slots for ammo.</p>
-   <p>T/ds won't hurt friendly mobs unless they are in the target list.</p>
+   <p>Units won't hurt friendly mobs unless they are in the target list.</p>
     <p>Turrets will take ammo from adjacent inventories if 'refill inventory' toggle is enabled in the configuration screen.</p>
 
     <h3>Types</h3>
-    <p>There are following types of t/ds:</p>
+    <p>There are following types of units:</p>
     <ol>
-        <li>Arrow: can use all kinds of arrows as ammo. Flame, Punch, Power enchantments on the bow are applicable by arrow t/ds.</li>
+        <li>Arrow: can use all kinds of arrows as ammo. Flame, Punch, Power enchantments on the bow are applicable by arrow units.</li>
         <img src="images/arrow-drone.png"><img src="images/arrow-turret.png">
         <li>Bullet: can use gold and iron nuggets as ammo.</li>
         <img src="images/bullet-drone.png"><img src="images/bullet-turret.png">
@@ -79,7 +79,7 @@ will place that t/d and load its data.</p>
    <h3>Configuration</h3>
    <p>Each turret type's stats can be configured separately, such as health, range, armor, fire rate, damage. By default, their stats are identical
    except damage; turrets ranked by damage, from lowest: cobble, firecharge, arrow, bullet, brick, gauss. If you change the range, then the new value
-   will be applied to only newly placed t/ds.</p>
+   will be applied to only newly placed units.</p>
    <p>Turret default values:</p>
    <p>Health = 60</p>
    <p>Armor = 3</p>
@@ -110,23 +110,23 @@ will place that t/d and load its data.</p>
    <p>You can turn on drone propeller sound in the client config.</p>
    <p>You can define what mobs will be excluded from default targets in the config.</p>
    <p>You can configure amount of titanium ore generated in 1.16.5-1.19.2 versions of the mod. Versions 1.20.1 and up require a datapack.</p>
-   <p>In the server config (which can be found in "world/serverconfig" directory) there are defined limits of drone and turret count per player.
+   <p>In the server config (which can be found in "world/serverconfig" directory) there are defined limits of drone and turret count per player and per dimension.
        A player will not be able to place new drones or turrets if he reaches the limits. Default values are 10 for drones and 10 for turrets.
     </p>
-    <p>You can toggle ammo refill, which will make t/d to take ammo from adjacent inventories.</p>
-    <p>You can copy target filters from one t/d to the other using Filter Copier.</p>
-    <p>You can make t/d projectiles ignore mob damage cooldown using <a href="https://legacy.curseforge.com/minecraft/customization/k-turrets-damage-cooldown-bypass">this datapack</a> (for versions 1.20.1 and up).</p>
+    <p>You can toggle ammo refill, which will make unit to take ammo from adjacent inventories.</p>
+    <p>You can copy target filters from one unit to the other using Filter Copier.</p>
+    <p>You can make unit projectiles ignore mob damage cooldown using <a href="https://legacy.curseforge.com/minecraft/customization/k-turrets-damage-cooldown-bypass">this datapack</a> (for versions 1.20.1 and up).</p>
 
-    <h3>Drone Reloader</h3>
-    <p>Drone Reloader is a block that reloads drone ammo. It can be automated, and reloads drones in 6 block range. It has 6 rows of slots for each drone ammo type.</p>
+    <h3>Ammo Reloader</h3>
+    <p>Ammo Reloader is a block that reloads drone ammo. It can be automated, and reloads drones in 6 block range. It has 6 rows of slots for each drone ammo type.</p>
 
    <h3>Tricks and non-obvious info</h3>
    <ol>
       <li>Place your turrets on an elevated blocks, so it is harder for melee mobs to reach them.</li>
-      <li>T/ds are immune to poison, wither, hunger, health, health boost and regeneration effects.</li>
+      <li>Units are immune to poison, wither, hunger, health, health boost and regeneration effects.</li>
       <li>Turrets can be put into minecarts.</li>
-      <li>Vanilla team system is considered by t/d targeting.</li>
-      <li>T/ds can't drown.</li>
+      <li>Vanilla team system is taken into account by unit targeting.</li>
+      <li>Units can't drown.</li>
    </ol>
 
    <h3>How to get a lot of ammo</h3>
