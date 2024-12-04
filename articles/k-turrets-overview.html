@@ -108,6 +108,18 @@
    <p>You can turn on drone propeller sound in the client config.</p>
    <p>You can define what mobs will be excluded from default targets in the config.</p>
    <p>You can configure amount of titanium ore generated in 1.16.5-1.19.2 versions of the mod. Versions 1.20.1 and up require a datapack.</p>
+    <p>Data layout:</p>
+    <pre>
+        -data
+            -k_turrets
+                -worldgen
+                    -configured_feature
+                        titanium_ore.json
+                        deepslate_titanium_ore.json
+                    -placed_feature
+                        titanium_ore.json
+                        deepslate_titanium_ore.json
+    </pre>
    <p>In the server config (which can be found in "world/serverconfig" directory) there are defined limits of drone and turret count per player and per dimension.
        A player will not be able to place new drones or turrets if he reaches the limits. Default values are 10 for drones and 10 for turrets.
     </p>
