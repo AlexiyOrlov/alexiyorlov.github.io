@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>How to generate Minecraft block voxel shapes</title>
+  <link rel="stylesheet" href="../prism/prism-dark.css">
+  <link rel="stylesheet" href="../main.css">
+</head>
+<body>
+<h1>How to generate Minecraft block voxel shapes</h1>
+<p>Did you know that you don't have to calculate the shape of the block manually?
+There is a plugin for Blockbench called Voxelshape Generators that can generate a block shape from its model.
+  Here is how to do it.
+</p>
+<ol>
+  <li>Open the plugin menu (File -> Plugins)</li>
+  <li>Search for Voxelshape generators and install it</li>
+  <li>Create a group in your model named 'VoxelShapes'</li>
+  <li>Place all model parts that you want to generate a shape from into this group</li>
+  <li>Then select File -> Export -> Export voxel shape</li>
+  <li>It will create a text file with a Java function that generates a shape for your block</li>
+  <li>Use this function in your code.</li>
+</ol>
+</body>
+</html>
