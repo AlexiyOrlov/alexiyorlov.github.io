@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registering things in multiloader</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="../prism/prism-dark.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<script src="../prism/prism-dark.js"></script>
+<body>
+<nav>
+    <ul>
+        <li><a class="margined-link" href="../index.html">Main page</a></li>
+    </ul>
+</nav>
+<h1>How to register things in Multiloader</h1>
+<h3>This guide was made for version 1.21.1</h3>
+<p>People who are just starting to mod using multiloader template often ask a question about how to register items,
+blocks, entities and other objects. I'll show you how.</p>
+<p>First problem you will encounter if you instantiate your objects in the common project and then trying to register
+them in every modloader is that the game crashes. That is because Minecraft allows instantiating objects only during
+    registration phase. To circumvent this, we need to use lazy initialization.</p>
+<p>I'll show how to use a subtype of lazy initialization - memoization. For this we have Google's library available
+    that provides that.</p>
+<p>Suppose you make a class to hold all your objects of particular kind, for example items:</p>
+<i>ModItems.java</i>
+<pre><code class="language-java">
+    import com.google.common.base.Supplier;
+    import com.google.common.base.Suppliers;
+
+    // a map that holds item identifiers and item objects
+    public static final HashMap&lt;String, Supplier&gt;Item>&gt; ITEM_MAP =new HashMap<>();
+
+    // memoize the item object
+    public static final com.google.common.base.Supplier&lt;Item&gt; TITANIUM_INGOT= Suppliers.memoize(() -> new Item(new Item.Properties()));
+
+    // then put the item into the map
+    static {
+        ITEM_MAP.put("titanium_ingot",TITANIUM_INGOT);
+    }
+</code> </pre>
+<p>Then you just use the map to register the items in the modloader-specific projects.</p>
+<p>Fabric - register your items in the ModInitializer:</p>
+<i>FabricMod.java</i>
+<pre><code class="language-java">
+    public class FabricMod implements ModInitializer {
+
+        @Override
+        public void onInitialize() {
+            //MainClass is your class that holds the mod ID
+            ModItems.ITEM_MAP.forEach((s, itemSupplier) -> Registry.register(BuiltInRegistries.ITEM,ResourceLocation.fromNamespaceAndPath(MainClass.ID,s),itemSupplier.get()));
+        }
+    }
+</code></pre>
+
+<p>Neoforge - register your items in the deferred register:</p>
+<i>NeoforgeMod.java</i>
+<pre><code class="language-java">
+    static final DeferredRegister&lt;Item&gt; ITEMS=DeferredRegister.createItems(MainClass.ID);
+
+    public class NeoforgeMod(IEventBus eventBus, ModContainer modContainer) throws IOException {
+        ModItems.ITEM_MAP.forEach(ITEMS::register);
+
+        ITEMS.register(eventBus);
+    }
+</code> </pre>
+
+<p>And that's all you need to know how to register objects without using third-party libraries. Good luck!</p>
+<nav>
+    <ul>
+        <li><a class="margined-link" href="../index.html">Main page</a></li>
+    </ul>
+</nav>
