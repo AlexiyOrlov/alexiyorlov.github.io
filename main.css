@@ -21,3 +21,11 @@ a:visited{
 .margined-link{
     margin-bottom: 0.5cm;
 }
+
+.header{
+    color: darkgreen;
+}
+
+.important{
+    color: khaki;
+}
